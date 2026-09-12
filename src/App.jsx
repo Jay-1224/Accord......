@@ -50,7 +50,7 @@ const DEMO_ACCOUNTS = [
 // verified position someone actually holds this conference; performance
 // points come only from an approved scorecard actually recorded in the app
 // (delegateScores / scorecardStatuses), never from invented history.
-const ROLE_BASE_POINTS = { president:60, gs:60, chair:45, cochair:40, host_school:25, school:25, delegate:20, admin:0 };
+const ROLE_BASE_POINTS = { president:60, gs:60, chair:45, cochair:40, host_school:0, school:0, delegate:20, admin:0 };
 const AWARD_TIERS = [
   { min:90, label:"Best Delegate",        bg:"#fef3c7", c:"#92400e" },
   { min:75, label:"Outstanding Delegate", bg:"#e0e7ff", c:"#3730a3" },
@@ -343,7 +343,7 @@ function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConfere
                 <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap",width:isMobile?"100%":"auto"}}>
                   <span style={pill(c.status)}>{c.status==="active"?"Active":"Upcoming"}</span>
                   <button onClick={()=>{setViewingConf(c);setParticipantSearch("");}} style={{...mkBtn(),padding:"6px 14px",fontSize:12}}>Participants</button>
-                  <button onClick={()=>setManagedConf({...c, participatingSchools:c.participatingSchools||[]})} style={{...mkBtn(),padding:"6px 14px",fontSize:12}}>Edit</button>
+                  <button onClick={()=>setManagedConf({...c, participatingSchools:c.participatingSchools||[], hostSchool:c.hostSchool||null})} style={{...mkBtn(),padding:"6px 14px",fontSize:12}}>Edit</button>
                   <button onClick={()=>{setConferences(cs=>cs.map(x=>x.id===c.id?{...x,status:x.status==="active"?"upcoming":"active"}:x));logAction(`Conference ${c.status==="active"?"suspended":"activated"}: ${c.name}`,"conf");}} style={{...mkBtn(c.status==="active"?"danger":"success"),padding:"6px 14px",fontSize:12}}>{c.status==="active"?"Suspend":"Activate"}</button>
                   <button onClick={()=>{setConferences(cs=>cs.filter(x=>x.id!==c.id));logAction(`Conference deleted: ${c.name}`,"conf");}} style={{...mkBtn("danger"),padding:"6px 10px",fontSize:12}}>✕</button>
                 </div>
@@ -360,7 +360,7 @@ function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConfere
                 ))}
                 <div style={{display:"flex",gap:10,marginTop:8}}>
                   <button onClick={()=>setShowNewConf(false)} style={{...mkBtn(),flex:1}}>Cancel</button>
-                  <button onClick={()=>{if(!newConf.name||!newConf.venue)return;const code=generateMunCode(conferences.map(c=>c.code));setConferences(cs=>[...cs,{id:Date.now(),name:newConf.name,venue:newConf.venue,status:"upcoming",code,participatingSchools:[]}]);logAction(`New conference created: ${newConf.name} – ${newConf.venue} (MUN Code: ${code})`,"conf");setNewConf({name:"",venue:""});setShowNewConf(false);}} style={{...mkBtn("primary"),flex:1}}>Create</button>
+                  <button onClick={()=>{if(!newConf.name||!newConf.venue)return;const code=generateMunCode(conferences.map(c=>c.code));setConferences(cs=>[...cs,{id:Date.now(),name:newConf.name,venue:newConf.venue,status:"upcoming",code,participatingSchools:[],hostSchool:null}]);logAction(`New conference created: ${newConf.name} – ${newConf.venue} (MUN Code: ${code})`,"conf");setNewConf({name:"",venue:""});setShowNewConf(false);}} style={{...mkBtn("primary"),flex:1}}>Create</button>
                 </div>
               </div>
             </div>
@@ -397,6 +397,13 @@ function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConfere
                     setNewCommittee({name:"",fullName:"",topic:""});
                   }} style={{...mkBtn("primary"),padding:"8px 16px",fontSize:12,flex:"0 0 auto"}}>+ Add</button>
                 </div>
+
+                <div style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.6,marginBottom:10,marginTop:22}}>HOST SCHOOL</div>
+                <select value={managedConf.hostSchool||""} onChange={e=>setManagedConf(p=>({...p,hostSchool:e.target.value||null}))} style={{...inputSt,background:"#fff",marginBottom:6}}>
+                  <option value="">No host school assigned</option>
+                  {adminSchools.map(s=><option key={s.id} value={s.name}>{s.name}</option>)}
+                </select>
+                <div style={{fontSize:11,color:C.textMuted,marginBottom:4}}>The school hosting this conference — this is what counts toward their "MUNs Conducted" on their profile.</div>
 
                 <div style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.6,marginBottom:10,marginTop:22}}>PARTICIPATING SCHOOLS</div>
                 {adminSchools.length===0&&<div style={{fontSize:12,color:C.textMuted}}>No schools in the directory yet — add some under the Schools tab first.</div>}
@@ -1112,9 +1119,9 @@ export default function App() {
     {id:5,title:"Key Phrases",text:"POINT OF ORDER\n\nRaised when a delegate believes the rules of procedure are being violated. The Chair rules on it immediately.\n\nThe Chair will reject or overrule the point if:\n- The point is incorrect: no actual breach of the rules occurred.\n- The point is trivial or dilatory: a minor issue, or being used to delay proceedings.\n- The point is raised improperly: it addresses substance/debate rather than procedure (that would instead be a Point of Parliamentary Inquiry or Point of Information).\n\nPhrases to reject a Point of Order — Direct:\n- \"The Chair rules the point of order not well taken.\"\n- \"Your point is overruled.\"\n- \"The Chair finds the point is not well founded.\"\n- \"The Chair rules that the procedure is correct.\"\n- \"That is not a violation of the rules of procedure.\"\n\nPhrases to reject a Point of Order — Explanatory:\n- \"The delegate is not speaking to a matter of procedure; the point is therefore out of order.\"\n- \"The current action is in compliance with the rules; the point is therefore not sustained.\"\n- \"That is an issue for a Point of Parliamentary Inquiry, not a Point of Order. Your point is not sustained.\"\n- \"The Chair is not prepared to rule on this matter as a violation of the rules. The point is overruled.\"\n(\"Not well taken\" is the classic parliamentary term for rejecting a Point of Order.)\n\nMOTIONS\n\nReasons a Chair might reject or discourage a motion:\n- Time management: the committee is behind schedule.\n- Repetitiveness: the sub-topic's main viewpoints are exhausted.\n- Need for informal discussion: the committee needs to shift to an Unmoderated Caucus to draft resolutions.\n- Improper procedure: incorrectly phrased, exceeds allowed limits, or raised at the wrong time.\n\nRejecting as out of order:\n- \"The motion for an extension is out of order at this time, as the floor is still open for other motions.\"\n- \"That motion is not in compliance with the total time limits established in our Rules of Procedure.\"\n- \"This moderated caucus has already been extended once; therefore, the motion for an additional extension is out of order.\"\n\nEncouraging the committee to move on:\n- \"The Chair appreciates the motion, but notes that discussion on this sub-topic has become largely repetitive. The floor is open for a motion for a different kind of caucus.\"\n- \"The Chair encourages delegates to consider whether an Unmoderated Caucus might be more productive at this stage to translate discussed ideas into a working paper.\"\n- \"The Chair observes that time is of the essence. Are there any motions to move directly to a new sub-topic or an Unmoderated Caucus?\"\n\nPutting it to a vote while signalling a preference:\n- \"All those in favor of extending this caucus, please raise your placards... All those against, please raise your placards... The motion fails. We will return to the Speakers List.\"\n\nTIME\n\nReasons a Chair might refuse or reduce requested time:\n- Too early in debate — delegates need more formal discussion first.\n- Excessive time requested relative to the session.\n- Need for structure — a Moderated Caucus may be needed before working groups.\n- Exceeds the Rules of Procedure's maximum time limit.\n- Deemed dilatory or repetitive.\n\nProposing a reduction:\n- \"The Chair recognizes the need for an Unmoderated Caucus, but suggests a total time of 10 minutes would be more appropriate. Does the delegate accept the amendment to their motion?\"\n- \"In the interest of time management, the Chair proposes an amendment to 15 minutes. Does the committee accept this friendly amendment?\"\n- \"The Chair rules the motion for 30 minutes out of order as it exceeds the established maximum. The motion is in order for a duration of 20 minutes.\"\n\nRuling the motion out of order:\n- \"The Chair thanks the delegate for the motion, but rules it out of order at this time. The committee has not yet heard sufficient discussion on the topic.\"\n- \"That motion is not in order as the committee has just concluded an Unmoderated Caucus. We will return to the Speakers List.\"\n- \"The Chair would prefer to entertain a motion for a Moderated Caucus at this juncture to discuss the newly introduced working paper.\"\nNote: if a motion is in order and seconded, the Chair is generally obligated to put it to a vote — the Chair's framing simply tends to influence how the committee votes.\n\nKEY PHRASES — VICE CHAIR / CO-CHAIR\n\nOpening and Roll Call:\n- \"Thank you, Honourable Chair. The Co-Chair notes that a quorum is established.\"\n- \"The Co-Chair will now conduct Roll Call. Please respond with 'Present' or 'Present and Voting' when your country is called.\"\n- \"The floor is now open for a motion to open the Speakers List.\"\n\nManaging the Speakers List (GSL):\n- \"The Co-Chair recognizes the delegate from [Country] for a time of one minute and thirty seconds.\"\n- \"The delegate from [Country] is reminded to confine their remarks to the topic currently under discussion.\"\n- \"The delegate has yielded their time to the Chair. Thank you, delegate.\"\n- \"The Co-Chair will now ask for any delegates wishing to be added to the General Speakers List to raise their placards.\"\n\nEntertaining and responding to motions:\n- \"The floor is now open to points and motions. Are there any such points or motions?\"\n- \"The delegate from [Country], you are recognized. Please state your motion and its parameters.\"\n- \"Thank you, delegate. The motion for [Motion] is in order / out of order.\"\n- \"There has been a motion for [Motion]. Are there any seconds to the motion?\"\n- \"The Chair rules this motion out of order as it is dilatory / violates the established Rules of Procedure / is redundant at this time.\"\n\nDirecting debate and voting:\n- \"Seeing both seconds and objections, the committee will now move into a procedural vote on the motion for [Motion].\"\n- \"Delegates are reminded that abstentions are not in order on procedural votes.\"\n- \"All those in favor of the motion, please raise your placards now.\"\n- \"The motion passes with [Number] votes in favor and [Number] votes against. We will now proceed into a [Caucus/Vote].\"\n\nMaintaining decorum and order:\n- \"Decorum! Delegates are requested to maintain professional conduct.\"\n- \"The Co-Chair reminds delegates that note-passing should be kept to committee business.\"\n- \"The delegate from [Country] is reminded to stay germane to the motion/topic at hand.\"\n- \"The Co-Chair will now address the Point of Parliamentary Inquiry. The delegate is correct/incorrect; the rules state...\"\n\nManaging the Dais / Head Chair transition:\n- \"Honourable Chair, does the dais have a position on the proposed time limit?\"\n- \"Honourable Chair, the current Speakers List has five speakers remaining.\"\n- \"Thank you, delegates. The Dais has determined that we will entertain one more moderated caucus before moving to a Working Paper presentation.\"\n\nMOST COMMON CHAIR PHRASES\n\nOpening and Roll Call:\n- \"I now call this session of the [Committee Name] to order.\"\n- \"Will all delegates please respond to Roll Call with 'Present' or 'Present and Voting.'\"\n- \"With quorum established, we may now proceed to the first order of business.\"\n- \"The floor is open for a motion to set the agenda.\"\n\nManaging debate flow:\n- \"The Chair would look favorably upon a motion to open the General Speakers List.\"\n- \"The Chair recognizes the delegate from [Country].\"\n- \"The speaking time for the General Speakers List is set at one minute and thirty seconds.\"\n- \"The delegate has yielded their time to the Chair.\"\n- \"The delegate has yielded their time to points of information; are there any such points on the floor?\"\n\nHandling motions and caucuses:\n- \"The motion for a [Moderated/Unmoderated Caucus] on [Subtopic] is in order.\"\n- \"Are there any seconds to the motion? Are there any objections?\"\n- \"The motion passes with majority/two-thirds support.\"\n- \"The motion fails. We will now return to the General Speakers List.\"\n- \"Delegates, the time for the caucus has elapsed. Please return to your seats.\"\n\nProcedure and decorum:\n- \"The Chair recognizes the delegate on a Point of Order.\"\n- \"The Point of Order is well-taken / not well-taken.\"\n- \"Decorum! Delegates, the Chair calls for silence for the speaker.\"\n- \"The delegate is reminded to confine their remarks to the topic at hand.\"\n- \"The Chair rules that motion out of order.\"\n\nVoting procedure and adjournment:\n- \"We will now enter Voting Procedure on Draft Resolution [Number]. All points and motions are out of order.\"\n- \"All those in favor of the resolution, please raise your placards now.\"\n- \"The resolution passes / fails.\"\n- \"The Chair would look favorably upon a motion to adjourn the committee.\"\n- \"The session of the [Committee Name] is now adjourned.\" ",updatedAt:"Provided by Admin"},
   ]);
   const [conferences, setConferences] = useSharedState("accord:conferences", [
-    {id:1,name:"HMUN 2025",  venue:"Mumbai",  status:"active",  code:"48213", participatingSchools:[]},
-    {id:2,name:"DULMUN 2025",venue:"Delhi",   status:"active",  code:"77591", participatingSchools:[]},
-    {id:3,name:"CHMUN 2025", venue:"Bilaspur",status:"active",  code:"30924", participatingSchools:["St. Xavier's School","DPS Raipur","Bilaspur Public School"]},
+    {id:1,name:"HMUN 2025",  venue:"Mumbai",  status:"active",  code:"48213", participatingSchools:[], hostSchool:null},
+    {id:2,name:"DULMUN 2025",venue:"Delhi",   status:"active",  code:"77591", participatingSchools:[], hostSchool:null},
+    {id:3,name:"CHMUN 2025", venue:"Bilaspur",status:"active",  code:"30924", participatingSchools:["St. Xavier's School","DPS Raipur","Bilaspur Public School"], hostSchool:"Bilaspur Public School"},
   ]);
   const [adminSchools, setAdminSchools] = useSharedState("accord:admin-schools", [
     {id:1,name:"St. Xavier's School",   city:"Mumbai",  status:"verified"},
@@ -1320,19 +1327,32 @@ export default function App() {
 
   if (!hasEnteredMUN) {
     if (profileView) {
+      const isInstitutional = role==="school" || role==="host_school";
+      const munsConducted = isInstitutional ? conferences.filter(c=>c.hostSchool===user.name) : [];
+      const munsParticipated = isInstitutional ? conferences.filter(c=>(c.participatingSchools||[]).includes(user.name)) : [];
       const myPerf = role==="delegate" ? delegatePerformance(user.email, scorecardBundle) : null;
-      const myRolePoints = ROLE_BASE_POINTS[role] ?? 10;
+      const myRolePoints = isInstitutional ? 0 : (ROLE_BASE_POINTS[role] ?? 10);
       const myIP = myRolePoints + (myPerf?.points || 0);
-      const conferenceAccounts = adminUsers.filter(a=>a.conference===user.conference && a.role!=="admin");
+      const conferenceAccounts = adminUsers.filter(a=>a.conference===user.conference && a.role!=="admin" && a.role!=="school" && a.role!=="host_school");
       const leaderboard = conferenceAccounts.map(a=>{
         const perf = a.role==="delegate" ? delegatePerformance(a.email, scorecardBundle) : null;
         const ip = (ROLE_BASE_POINTS[a.role]??10) + (perf?.points||0);
-        return {email:a.email, name:a.name, role:a.role, committee:a.committee, ip};
+        return {email:a.email, name:a.name, ip};
       }).sort((a,b)=>b.ip-a.ip);
       const rankIdx = leaderboard.findIndex(l=>l.email===user.email);
       const myRank = rankIdx+1;
       const topBoard = leaderboard.slice(0,10);
       const showRankSeparately = myRank>10;
+      const profileStats = isInstitutional ? [
+        {l:"MUNs Conducted",v:munsConducted.length},
+        {l:"MUNs Participated",v:munsParticipated.length},
+        {l:"Account Type",v:currentRole.label},
+      ] : [
+        {l:"MUNs Participated",v:1},
+        {l:"Total IP Points",v:myIP},
+        {l:"Conference Rank",v:rankIdx>=0?`#${myRank} / ${leaderboard.length}`:"—"},
+        {l:"Awards Won",v:myPerf?.award?1:0},
+      ];
       return (
         <div style={{minHeight:"100vh",background:C.bg,fontFamily:"system-ui"}}>
           <div style={{background:C.navy,padding:"20px 32px",display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
@@ -1346,15 +1366,11 @@ export default function App() {
             </div>
           </div>
           <div style={{maxWidth:900,margin:"0 auto",padding:"28px 24px 60px"}}>
-            <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":"repeat(4,1fr)",gap:12,marginBottom:20}}>
-              {[
-                {l:"MUNs Participated",v:1},
-                {l:"Total IP Points",v:myIP},
-                {l:"Conference Rank",v:rankIdx>=0?`#${myRank} / ${leaderboard.length}`:"—"},
-                {l:"Awards Won",v:myPerf?.award?1:0},
-              ].map(s=>(<div key={s.l} style={{background:C.bgSoft,border:`1px solid ${C.border}`,borderRadius:10,padding:"16px 18px"}}><div style={{fontSize:24,fontWeight:700,color:C.navy}}>{s.v}</div><div style={{fontSize:11,color:C.textMuted,marginTop:2}}>{s.l}</div></div>))}
+            <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":`repeat(${profileStats.length},1fr)`,gap:12,marginBottom:20}}>
+              {profileStats.map(s=>(<div key={s.l} style={{background:C.bgSoft,border:`1px solid ${C.border}`,borderRadius:10,padding:"16px 18px"}}><div style={{fontSize:24,fontWeight:700,color:C.navy}}>{s.v}</div><div style={{fontSize:11,color:C.textMuted,marginTop:2}}>{s.l}</div></div>))}
             </div>
 
+            {!isInstitutional&&(
             <div style={card}>
               <div style={cardTitle}>Your Performance — {user.conference}</div>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 0",borderBottom:`1px solid ${C.border}`}}>
@@ -1387,16 +1403,28 @@ export default function App() {
               )}
               <div style={{fontSize:11,color:C.textMuted,marginTop:6,paddingTop:14,borderTop:`1px solid ${C.border}`,lineHeight:1.6}}>Intellectual Performance (IP) is calculated from real, recorded activity on this platform: role points for the position you hold, plus performance points only once a Chair has actually approved your scorecard — never from invented history.</div>
             </div>
+            )}
+            {isInstitutional&&(
+            <div style={card}>
+              <div style={cardTitle}>{user.name} — Conference History</div>
+              <div style={{fontSize:12.5,color:C.textMuted,lineHeight:1.7,marginBottom:16}}>{currentRole.label} accounts represent an institution rather than an individual participant, so they don't earn Intellectual Performance points and don't appear on the leaderboard below.</div>
+              <div style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.6,marginBottom:8}}>MUNS CONDUCTED (HOSTED)</div>
+              {munsConducted.length===0&&<div style={{fontSize:13,color:C.textMuted,marginBottom:16}}>Not hosting any conference yet.</div>}
+              {munsConducted.map(c=>(<div key={c.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:13,fontWeight:600,color:C.navy}}>{c.name}</span><span style={{fontSize:12,color:C.textMuted}}>{c.venue}</span></div>))}
+              <div style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.6,margin:"18px 0 8px"}}>MUNS PARTICIPATED IN</div>
+              {munsParticipated.length===0&&<div style={{fontSize:13,color:C.textMuted}}>Not registered as a participating school for any conference yet.</div>}
+              {munsParticipated.map(c=>(<div key={c.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:13,fontWeight:600,color:C.navy}}>{c.name}</span><span style={{fontSize:12,color:C.textMuted}}>{c.venue}</span></div>))}
+            </div>
+            )}
 
             <div style={card}>
               <div style={cardTitle}>Leaderboard — {user.conference}</div>
               {topBoard.map((l,i)=>{
-                const r=ROLES.find(x=>x.id===l.role);
                 const isMe=l.email===user.email;
                 return (
                   <div key={l.email} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 0",borderBottom:`1px solid ${C.border}`,background:isMe?C.navyLight:"transparent",borderRadius:isMe?8:0,paddingLeft:isMe?10:0,paddingRight:isMe?10:0}}>
                     <div style={{width:24,fontWeight:700,fontSize:13,color:i<3?C.gold:C.textMuted,flexShrink:0}}>{i+1}</div>
-                    <div style={{flex:1,minWidth:0}}><div style={{fontWeight:isMe?700:600,fontSize:13,color:C.navy,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.name}{isMe?" (You)":""}</div><div style={{fontSize:11,color:C.textMuted,marginTop:1}}>{r?.label}{l.committee?` · ${l.committee}`:""}</div></div>
+                    <div style={{flex:1,minWidth:0}}><div style={{fontWeight:isMe?700:600,fontSize:13,color:C.navy,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.name}{isMe?" (You)":""}</div></div>
                     <div style={{fontWeight:700,fontSize:14,color:C.navy,flexShrink:0}}>{l.ip} IP</div>
                   </div>
                 );
@@ -1404,7 +1432,7 @@ export default function App() {
               {showRankSeparately&&(
                 <div style={{display:"flex",alignItems:"center",gap:12,padding:"10px 10px",marginTop:8,background:C.navyLight,borderRadius:8}}>
                   <div style={{width:24,fontWeight:700,fontSize:13,color:C.textMuted,flexShrink:0}}>{myRank}</div>
-                  <div style={{flex:1,minWidth:0}}><div style={{fontWeight:700,fontSize:13,color:C.navy}}>{user.name} (You)</div><div style={{fontSize:11,color:C.textMuted,marginTop:1}}>{currentRole.label}{user.committee?` · ${user.committee}`:""}</div></div>
+                  <div style={{flex:1,minWidth:0}}><div style={{fontWeight:700,fontSize:13,color:C.navy}}>{user.name} (You)</div></div>
                   <div style={{fontWeight:700,fontSize:14,color:C.navy,flexShrink:0}}>{myIP} IP</div>
                 </div>
               )}
