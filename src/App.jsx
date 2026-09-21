@@ -25,26 +25,26 @@ const DEMO_ACCOUNTS = [
   { email:"school@accord.in",         password:"school123",    role:"school",      name:"DPS Raipur",              conference:"CHMUN 2025", committee:null,    country:null },
   { email:"chair.unsc@accord.in",     password:"chair123",     role:"chair",       name:"Rahul Verma",             conference:"CHMUN 2025", committee:"UNSC",  country:null },
   { email:"cochair.unsc@accord.in",   password:"cochair123",   role:"cochair",     name:"Sneha Patel",             conference:"CHMUN 2025", committee:"UNSC",  country:null },
-  { email:"d.unsc.france@accord.in",  password:"del123",       role:"delegate",    name:"Aarav Singh",             conference:"CHMUN 2025", committee:"UNSC",  country:"France" },
-  { email:"d.unsc.usa@accord.in",     password:"del123",       role:"delegate",    name:"Riya Joshi",              conference:"CHMUN 2025", committee:"UNSC",  country:"USA" },
-  { email:"d.unsc.uk@accord.in",      password:"del123",       role:"delegate",    name:"Vikram Nair",             conference:"CHMUN 2025", committee:"UNSC",  country:"United Kingdom" },
-  { email:"d.unsc.russia@accord.in",  password:"del123",       role:"delegate",    name:"Ananya Iyer",             conference:"CHMUN 2025", committee:"UNSC",  country:"Russia" },
-  { email:"d.unsc.china@accord.in",   password:"del123",       role:"delegate",    name:"Rohan Das",               conference:"CHMUN 2025", committee:"UNSC",  country:"China" },
-  { email:"d.unsc.india@accord.in",   password:"del123",       role:"delegate",    name:"Meera Pillai",            conference:"CHMUN 2025", committee:"UNSC",  country:"India" },
+  { email:"d.unsc.france@accord.in",  password:"del123",       role:"delegate",    name:"Aarav Singh",             conference:"CHMUN 2025", committee:"UNSC",  country:"France",         school:"St. Xavier's School" },
+  { email:"d.unsc.usa@accord.in",     password:"del123",       role:"delegate",    name:"Riya Joshi",              conference:"CHMUN 2025", committee:"UNSC",  country:"USA",            school:"DPS Raipur" },
+  { email:"d.unsc.uk@accord.in",      password:"del123",       role:"delegate",    name:"Vikram Nair",             conference:"CHMUN 2025", committee:"UNSC",  country:"United Kingdom", school:"St. Xavier's School" },
+  { email:"d.unsc.russia@accord.in",  password:"del123",       role:"delegate",    name:"Ananya Iyer",             conference:"CHMUN 2025", committee:"UNSC",  country:"Russia",         school:"DPS Raipur" },
+  { email:"d.unsc.china@accord.in",   password:"del123",       role:"delegate",    name:"Rohan Das",               conference:"CHMUN 2025", committee:"UNSC",  country:"China",          school:"St. Xavier's School" },
+  { email:"d.unsc.india@accord.in",   password:"del123",       role:"delegate",    name:"Meera Pillai",            conference:"CHMUN 2025", committee:"UNSC",  country:"India",          school:"DPS Raipur" },
   { email:"chair.unhrc@accord.in",    password:"chair123",     role:"chair",       name:"Divya Menon",             conference:"CHMUN 2025", committee:"UNHRC", country:null },
   { email:"cochair.unhrc@accord.in",  password:"cochair123",   role:"cochair",     name:"Arjun Reddy",             conference:"CHMUN 2025", committee:"UNHRC", country:null },
-  { email:"d.unhrc.ger@accord.in",    password:"del123",       role:"delegate",    name:"Ishaan Kapoor",           conference:"CHMUN 2025", committee:"UNHRC", country:"Germany" },
-  { email:"d.unhrc.can@accord.in",    password:"del123",       role:"delegate",    name:"Pooja Rao",               conference:"CHMUN 2025", committee:"UNHRC", country:"Canada" },
-  { email:"d.unhrc.aus@accord.in",    password:"del123",       role:"delegate",    name:"Karan Malhotra",          conference:"CHMUN 2025", committee:"UNHRC", country:"Australia" },
+  { email:"d.unhrc.ger@accord.in",    password:"del123",       role:"delegate",    name:"Ishaan Kapoor",           conference:"CHMUN 2025", committee:"UNHRC", country:"Germany",       school:"St. Xavier's School" },
+  { email:"d.unhrc.can@accord.in",    password:"del123",       role:"delegate",    name:"Pooja Rao",               conference:"CHMUN 2025", committee:"UNHRC", country:"Canada",        school:"DPS Raipur" },
+  { email:"d.unhrc.aus@accord.in",    password:"del123",       role:"delegate",    name:"Karan Malhotra",          conference:"CHMUN 2025", committee:"UNHRC", country:"Australia",     school:"St. Xavier's School" },
   { email:"chair.disec@accord.in",    password:"chair123",     role:"chair",       name:"Siddharth Roy",           conference:"CHMUN 2025", committee:"DISEC", country:null },
   { email:"cochair.disec@accord.in",  password:"cochair123",   role:"cochair",     name:"Tanvi Shah",              conference:"CHMUN 2025", committee:"DISEC", country:null },
-  { email:"d.disec.india@accord.in",  password:"del123",       role:"delegate",    name:"Aditya Kumar",            conference:"CHMUN 2025", committee:"DISEC", country:"India" },
-  { email:"d.disec.jpn@accord.in",    password:"del123",       role:"delegate",    name:"Shreya Nambiar",          conference:"CHMUN 2025", committee:"DISEC", country:"Japan" },
-  { email:"d.disec.brz@accord.in",    password:"del123",       role:"delegate",    name:"Akash Tiwari",            conference:"CHMUN 2025", committee:"DISEC", country:"Brazil" },
+  { email:"d.disec.india@accord.in",  password:"del123",       role:"delegate",    name:"Aditya Kumar",            conference:"CHMUN 2025", committee:"DISEC", country:"India",         school:"DPS Raipur" },
+  { email:"d.disec.jpn@accord.in",    password:"del123",       role:"delegate",    name:"Shreya Nambiar",          conference:"CHMUN 2025", committee:"DISEC", country:"Japan",         school:"St. Xavier's School" },
+  { email:"d.disec.brz@accord.in",    password:"del123",       role:"delegate",    name:"Akash Tiwari",            conference:"CHMUN 2025", committee:"DISEC", country:"Brazil",        school:"DPS Raipur" },
   { email:"chair.ecosoc@accord.in",   password:"chair123",     role:"chair",       name:"Nandini Krishnan",        conference:"CHMUN 2025", committee:"ECOSOC",country:null },
   { email:"cochair.ecosoc@accord.in", password:"cochair123",   role:"cochair",     name:"Rahul Saxena",            conference:"CHMUN 2025", committee:"ECOSOC",country:null },
-  { email:"d.eco.brz@accord.in",      password:"del123",       role:"delegate",    name:"Swati Bhatt",             conference:"CHMUN 2025", committee:"ECOSOC",country:"Brazil" },
-  { email:"d.eco.mex@accord.in",      password:"del123",       role:"delegate",    name:"Dev Sharma",              conference:"CHMUN 2025", committee:"ECOSOC",country:"Mexico" },
+  { email:"d.eco.brz@accord.in",      password:"del123",       role:"delegate",    name:"Swati Bhatt",             conference:"CHMUN 2025", committee:"ECOSOC",country:"Brazil",        school:"St. Xavier's School" },
+  { email:"d.eco.mex@accord.in",      password:"del123",       role:"delegate",    name:"Dev Sharma",              conference:"CHMUN 2025", committee:"ECOSOC",country:"Mexico",        school:"DPS Raipur" },
 ];
 // Intellectual Performance (IP) points are genuine: role points reflect the
 // verified position someone actually holds this conference; performance
@@ -399,10 +399,13 @@ function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConfere
                 </div>
 
                 <div style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.6,marginBottom:10,marginTop:22}}>HOST SCHOOL</div>
-                <select value={managedConf.hostSchool||""} onChange={e=>setManagedConf(p=>({...p,hostSchool:e.target.value||null}))} style={{...inputSt,background:"#fff",marginBottom:6}}>
-                  <option value="">No host school assigned</option>
-                  {adminSchools.map(s=><option key={s.id} value={s.name}>{s.name}</option>)}
-                </select>
+                <SearchableSelect
+                  value={managedConf.hostSchool||""}
+                  onChange={v=>setManagedConf(p=>({...p,hostSchool:v||null}))}
+                  options={[{value:"",label:"No host school assigned"}, ...adminSchools.map(s=>({value:s.name,label:s.name,sublabel:s.city}))]}
+                  inputStyle={{...inputSt,background:"#fff",marginBottom:6}}
+                  placeholder="Type a school name..."
+                />
                 <div style={{fontSize:11,color:C.textMuted,marginBottom:4}}>The school hosting this conference — this is what counts toward their "MUNs Conducted" on their profile.</div>
 
                 <div style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.6,marginBottom:10,marginTop:22}}>PARTICIPATING SCHOOLS</div>
@@ -502,13 +505,25 @@ function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConfere
                 {[{l:"Full Name",k:"name",ph:"e.g. Rahul Sharma"},{l:"Email",k:"email",ph:"e.g. rahul@accord.in"},{l:"Committee",k:"committee",ph:"e.g. UNSC"},{l:"Country / Portfolio",k:"country",ph:"e.g. France"}].map(f=>(
                   <div key={f.k} style={{marginBottom:12}}><label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:5,letterSpacing:0.5}}>{f.l.toUpperCase()}</label><input value={newUser[f.k]} onChange={e=>setNewUser(p=>({...p,[f.k]:e.target.value}))} placeholder={f.ph} style={inputSt}/></div>
                 ))}
-                <div style={{marginBottom:12}}><label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:5,letterSpacing:0.5}}>ROLE</label><select value={newUser.role} onChange={e=>setNewUser(p=>({...p,role:e.target.value}))} style={{...inputSt,background:"#fff"}}>{ROLES.map(r=><option key={r.id} value={r.id}>{r.label}</option>)}</select></div>
+                <div style={{marginBottom:12}}>
+                  <label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:5,letterSpacing:0.5}}>ROLE</label>
+                  <SearchableSelect
+                    value={newUser.role}
+                    onChange={v=>setNewUser(p=>({...p,role:v}))}
+                    options={ROLES.map(r=>({value:r.id,label:r.label}))}
+                    inputStyle={{...inputSt,background:"#fff"}}
+                    placeholder="Type a role..."
+                  />
+                </div>
                 <div style={{marginBottom:14}}>
                   <label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:5,letterSpacing:0.5}}>CONFERENCE</label>
-                  <select value={newUser.conference} onChange={e=>setNewUser(p=>({...p,conference:e.target.value}))} style={{...inputSt,background:"#fff"}}>
-                    <option value="">Select conference...</option>
-                    {conferences.map(c=><option key={c.id} value={c.name}>{c.name}</option>)}
-                  </select>
+                  <SearchableSelect
+                    value={newUser.conference}
+                    onChange={v=>setNewUser(p=>({...p,conference:v}))}
+                    options={conferences.map(c=>({value:c.name,label:c.name,code:c.code}))}
+                    inputStyle={{...inputSt,background:"#fff"}}
+                    placeholder="Type a conference name or code..."
+                  />
                 </div>
                 <div style={{display:"flex",gap:10}}>
                   <button onClick={()=>setShowNewUser(false)} style={{...mkBtn(),flex:1}}>Cancel</button>
@@ -723,20 +738,92 @@ function HomePage({ onEnter, onSignup, onParticipate }) {
   );
 }
 
-function SignupPage({ onSubmit, onBack, onSigninClick }) {
-  const [name, setName] = useState("");
+// A typeable dropdown: shows the current selection like a normal <select>,
+// but focusing it opens a filterable list, and typing narrows it by label,
+// code, or sublabel (e.g. matching a conference by name OR its MUN code).
+// options: [{ value, label, sublabel?, code? }]. Falls back to a plain-text
+// "no matches" row rather than ever silently hiding the input.
+function SearchableSelect({ value, onChange, options, placeholder, inputStyle, allowFreeText, freeTextLabel }) {
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const wrapRef = useRef(null);
+  const selected = options.find(o => o.value === value);
+
+  useEffect(() => { if (!open) setQuery(selected ? selected.label : (value || "")); }, [value]); // eslint-disable-line
+
+  useEffect(() => {
+    if (!open) return;
+    const onDocMouseDown = (e) => {
+      if (wrapRef.current && !wrapRef.current.contains(e.target)) {
+        setOpen(false);
+        setQuery(selected ? selected.label : (allowFreeText ? (value || "") : ""));
+      }
+    };
+    document.addEventListener("mousedown", onDocMouseDown);
+    return () => document.removeEventListener("mousedown", onDocMouseDown);
+  }, [open, selected, allowFreeText, value]);
+
+  const q = query.trim().toLowerCase();
+  const filtered = !q ? options : options.filter(o =>
+    o.label.toLowerCase().includes(q) || (o.code && o.code.toLowerCase().includes(q)) || (o.sublabel && o.sublabel.toLowerCase().includes(q))
+  );
+
+  const pick = (o) => { onChange(o.value); setOpen(false); setQuery(o.label); };
+  const commitFreeText = () => { if (allowFreeText && query.trim()) { onChange(query.trim()); } setOpen(false); };
+
+  return (
+    <div ref={wrapRef} style={{ position:"relative" }}>
+      <input
+        value={open ? query : (selected ? selected.label : (allowFreeText ? (value || "") : ""))}
+        onFocus={() => { setOpen(true); setQuery(""); }}
+        onChange={e => { setQuery(e.target.value); setOpen(true); }}
+        onKeyDown={e => {
+          if (e.key === "Enter") { e.preventDefault(); if (filtered.length > 0) pick(filtered[0]); else commitFreeText(); }
+          if (e.key === "Escape") { setOpen(false); setQuery(selected ? selected.label : (allowFreeText ? (value || "") : "")); }
+        }}
+        onBlur={() => { if (allowFreeText) setTimeout(() => { if (open) commitFreeText(); }, 120); }}
+        placeholder={placeholder || "Type to search..."}
+        autoComplete="off"
+        style={inputStyle || inputSt}
+      />
+      {open && (
+        <div style={{ position:"absolute", top:"100%", left:0, right:0, marginTop:4, background:"#fff", border:`1px solid ${C.border}`, borderRadius:8, boxShadow:"0 10px 28px rgba(0,0,0,0.15)", maxHeight:230, overflowY:"auto", zIndex:80 }}>
+          {filtered.length === 0 && (
+            <div style={{ padding:"10px 14px", fontSize:12.5, color:C.textMuted }}>
+              {allowFreeText && query.trim() ? `Press Enter to use "${query.trim()}"${freeTextLabel?` ${freeTextLabel}`:""}` : "No matches"}
+            </div>
+          )}
+          {filtered.map(o => (
+            <div key={o.value} onMouseDown={(e) => { e.preventDefault(); pick(o); }}
+              style={{ padding:"9px 14px", fontSize:13, cursor:"pointer", color:C.text, borderBottom:`1px solid ${C.border}` }}
+              onMouseEnter={e => e.currentTarget.style.background = C.bgSoft}
+              onMouseLeave={e => e.currentTarget.style.background = "#fff"}>
+              <div style={{ fontWeight:600 }}>{o.label}{o.code ? <span style={{ fontWeight:400, color:C.textMuted }}> · {o.code}</span> : null}</div>
+              {o.sublabel && <div style={{ fontSize:11, color:C.textMuted, marginTop:1 }}>{o.sublabel}</div>}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SignupPage({ onSubmit, onBack, onSigninClick, adminSchools }) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [school, setSchool] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = (e) => {
     if (e && e.preventDefault) e.preventDefault();
-    if (!name.trim() || !email.trim() || !password.trim()) { setError("Please fill in every field."); return; }
+    if (!firstName.trim() || !lastName.trim() || !email.trim() || !password.trim() || !school.trim()) { setError("Please fill in every field."); return; }
     if (password.length < 6) { setError("Password should be at least 6 characters."); return; }
     setError(""); setSubmitting(true);
     setTimeout(()=>{
-      const res = onSubmit({name, email, password});
+      const res = onSubmit({name: `${firstName.trim()} ${lastName.trim()}`, email, password, school: school.trim()});
       if (!res.ok) { setError(res.error); setSubmitting(false); }
     }, 400);
   };
@@ -750,8 +837,22 @@ function SignupPage({ onSubmit, onBack, onSigninClick }) {
         <div style={{fontSize:13,color:"rgba(255,255,255,0.5)",marginTop:4}}>Just the basics — you'll pick your conference next, on your own terms.</div>
       </div>
       <div style={{background:"#fff",borderRadius:14,padding:"28px 32px",width:"100%",maxWidth:400,boxShadow:"0 24px 60px rgba(0,0,0,0.3)",boxSizing:"border-box"}}>
-        <div style={{marginBottom:14}}><label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>FULL NAME</label><input value={name} onChange={e=>{setName(e.target.value);setError("");}} placeholder="e.g. Rahul Sharma" style={inputSt}/></div>
+        <div style={{display:"flex",gap:10,marginBottom:14}}>
+          <div style={{flex:1}}><label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>FIRST NAME</label><input value={firstName} onChange={e=>{setFirstName(e.target.value);setError("");}} placeholder="Rahul" style={inputSt}/></div>
+          <div style={{flex:1}}><label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>LAST NAME</label><input value={lastName} onChange={e=>{setLastName(e.target.value);setError("");}} placeholder="Sharma" style={inputSt}/></div>
+        </div>
         <div style={{marginBottom:14}}><label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>EMAIL</label><input type="email" value={email} onChange={e=>{setEmail(e.target.value);setError("");}} placeholder="you@example.com" style={inputSt}/></div>
+        <div style={{marginBottom:14}}>
+          <label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>SCHOOL</label>
+          <SearchableSelect
+            value={school}
+            onChange={setSchool}
+            options={(adminSchools||[]).map(s=>({value:s.name,label:s.name,sublabel:s.city}))}
+            placeholder="Start typing your school's name..."
+            allowFreeText
+            freeTextLabel="as a new school"
+          />
+        </div>
         <div style={{marginBottom:18}}><label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>PASSWORD</label><input type="password" value={password} onChange={e=>{setPassword(e.target.value);setError("");}} placeholder="At least 6 characters" style={inputSt}/></div>
         {error&&<div style={{background:C.redBg,color:C.redTxt,borderRadius:7,padding:"10px 14px",fontSize:13,marginBottom:14,border:"1px solid #fecaca"}}>{error}</div>}
         <button onClick={handleSubmit} disabled={submitting} style={{...mkBtn("primary"),width:"100%",padding:"11px",fontSize:14}}>{submitting?"Creating...":"Create Profile"}</button>
@@ -864,50 +965,86 @@ function LoginPage({ onLogin, onBack, adminUsers, onSignupClick }) {
   );
 }
 
-function RequestToParticipatePage({ conferences, adminSchools, user, onSubmit, onBack }) {
-  const [confName, setConfName] = useState("");
-  const [schoolName, setSchoolName] = useState("");
+// Every account is tied to a school (set at sign-up), so this no longer asks
+// "which school" or offers an "individual" path — it goes straight to the
+// conferences that school is already registered for.
+function RequestToParticipatePage({ conferences, user, onSubmit, onBack, onDone }) {
+  const [search, setSearch] = useState("");
   const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
+  const [submittingFor, setSubmittingFor] = useState("");
+  const [doneConf, setDoneConf] = useState(null);
 
-  const selectedConf = conferences.find(c=>c.name===confName);
+  const alreadyRegisteredNames = new Set(
+    (user?.registrations && user.registrations.length > 0 ? user.registrations : (user?.conference ? [{conference:user.conference}] : [])).map(r=>r.conference)
+  );
+  // Only conferences that are upcoming (not yet active) and that this
+  // user's school is already registered for — that pre-approval by the
+  // conference's Host School/Accord Admin is what lets this go through
+  // instantly, with nothing left to review.
+  const available = conferences.filter(c =>
+    c.status === "upcoming" && !alreadyRegisteredNames.has(c.name) && (c.participatingSchools||[]).includes(user.school)
+  );
+  const q = search.trim().toLowerCase();
+  const filtered = !q ? available : available.filter(c =>
+    c.name.toLowerCase().includes(q) || (c.code && c.code.toLowerCase().includes(q)) || c.venue.toLowerCase().includes(q)
+  );
 
-  const handleSubmit = () => {
-    if (!confName) { setError("Please choose a conference."); return; }
-    if (!schoolName) { setError("Please choose your school."); return; }
-    setError(""); setSubmitting(true);
+  const handlePick = (conf) => {
+    setError(""); setSubmittingFor(conf.name);
     setTimeout(()=>{
-      const res = onSubmit(confName, schoolName);
-      if (!res.ok) { setError(res.error); setSubmitting(false); }
+      const res = onSubmit(conf.name);
+      if (!res.ok) { setError(res.error); setSubmittingFor(""); }
+      else { setDoneConf(conf); setSubmittingFor(""); }
     }, 400);
   };
 
+  if (doneConf) {
+    return (
+      <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#0f2044 0%,#1a3560 50%,#0f2044 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:20,fontFamily:"system-ui"}}>
+        <div style={{background:"#fff",borderRadius:14,padding:"28px 32px",width:"100%",maxWidth:420,boxShadow:"0 24px 60px rgba(0,0,0,0.3)",boxSizing:"border-box",textAlign:"center"}}>
+          <div style={{fontSize:32,marginBottom:10}}>✅</div>
+          <div style={{fontWeight:700,fontSize:15,color:C.navy,marginBottom:8}}>You're in!</div>
+          <div style={{fontSize:13,color:C.textMuted,lineHeight:1.6,marginBottom:20}}>You've been registered for {doneConf.name}. You can enter it any time from "Your MUNs."</div>
+          <button onClick={()=> (onDone ? onDone() : onBack && onBack())} style={{...mkBtn("primary"),width:"100%",padding:"11px",fontSize:14}}>Done</button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#0f2044 0%,#1a3560 50%,#0f2044 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:20,fontFamily:"system-ui",position:"relative"}}>
-      {onBack&&<button onClick={onBack} style={{position:"absolute",top:20,left:20,background:"none",border:"none",color:"rgba(255,255,255,0.55)",fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",gap:4}}>← Back</button>}
-      <div style={{textAlign:"center",marginBottom:24}}>
+      {onBack && <button onClick={onBack} style={{position:"absolute",top:20,left:20,background:"none",border:"none",color:"rgba(255,255,255,0.55)",fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",gap:4}}>← Back</button>}
+      <div style={{textAlign:"center",marginBottom:20}}>
         <div style={{width:54,height:54,background:"rgba(255,255,255,0.1)",borderRadius:14,display:"flex",alignItems:"center",justifyContent:"center",margin:"0 auto 14px",border:"1px solid rgba(255,255,255,0.15)"}}><span style={{color:"#fff",fontSize:26,fontFamily:"Georgia,serif",fontWeight:700}}>A</span></div>
-        <div style={{fontSize:24,fontWeight:700,color:"#fff",fontFamily:"Georgia,serif"}}>Request to Participate</div>
-        <div style={{fontSize:13,color:"rgba(255,255,255,0.5)",marginTop:4}}>{user?.name?`Hi ${user.name.split(" ")[0]} — `:""}choose a conference and your school. You're approved instantly if your school is registered for it.</div>
+        <div style={{fontSize:20,fontWeight:700,color:"#fff",fontFamily:"Georgia,serif"}}>{user.school ? `Available Conferences for your school ${user.school} are:` : "No school on your account"}</div>
       </div>
-      <div style={{background:"#fff",borderRadius:14,padding:"28px 32px",width:"100%",maxWidth:420,boxShadow:"0 24px 60px rgba(0,0,0,0.3)",boxSizing:"border-box"}}>
-        <div style={{marginBottom:14}}>
-          <label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>CONFERENCE</label>
-          <select value={confName} onChange={e=>{setConfName(e.target.value);setError("");}} style={{...inputSt,background:"#fff"}}>
-            <option value="">Select a conference...</option>
-            {conferences.map(c=><option key={c.id} value={c.name}>{c.name} — {c.venue}</option>)}
-          </select>
-          {selectedConf&&<div style={{fontSize:11.5,color:C.textMuted,marginTop:6}}>{(selectedConf.participatingSchools||[]).length} school{(selectedConf.participatingSchools||[]).length===1?"":"s"} registered for this conference.</div>}
-        </div>
-        <div style={{marginBottom:18}}>
-          <label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>YOUR SCHOOL</label>
-          <select value={schoolName} onChange={e=>{setSchoolName(e.target.value);setError("");}} style={{...inputSt,background:"#fff"}}>
-            <option value="">Select your school...</option>
-            {adminSchools.map(s=><option key={s.id} value={s.name}>{s.name} — {s.city}</option>)}
-          </select>
-        </div>
-        {error&&<div style={{background:C.redBg,color:C.redTxt,borderRadius:7,padding:"10px 14px",fontSize:13,marginBottom:14,border:"1px solid #fecaca"}}>{error}</div>}
-        <button onClick={handleSubmit} disabled={submitting} style={{...mkBtn("primary"),width:"100%",padding:"11px",fontSize:14}}>{submitting?"Checking...":"Submit Request"}</button>
+      <div style={{background:"#fff",borderRadius:14,padding:"24px 28px",width:"100%",maxWidth:460,boxShadow:"0 24px 60px rgba(0,0,0,0.3)",boxSizing:"border-box",maxHeight:"70vh",display:"flex",flexDirection:"column"}}>
+        {!user.school ? (
+          <div style={{fontSize:13,color:C.textMuted,lineHeight:1.6,padding:"8px 2px"}}>Your account isn't linked to a school yet. Contact Accord Admin to have one added, then come back here.</div>
+        ) : (
+          <>
+            <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search by conference name or MUN code..." style={{...inputSt,marginBottom:14}} autoFocus/>
+            {error && <div style={{background:C.redBg,color:C.redTxt,borderRadius:7,padding:"10px 14px",fontSize:13,marginBottom:14,border:"1px solid #fecaca"}}>{error}</div>}
+            <div style={{overflowY:"auto"}}>
+              {filtered.length===0 && (
+                <div style={{fontSize:13,color:C.textMuted,lineHeight:1.6,padding:"8px 2px"}}>
+                  {available.length===0
+                    ? `${user.school} isn't yet registered for any upcoming conference. Ask your school coordinator to check with the conference's Host School or Accord Admin.`
+                    : "No conferences match your search."}
+                </div>
+              )}
+              {filtered.map(c=>(
+                <div key={c.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",gap:12,padding:"12px 4px",borderBottom:`1px solid ${C.border}`}}>
+                  <div style={{minWidth:0}}>
+                    <div style={{fontWeight:700,fontSize:14,color:C.navy,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{c.name}</div>
+                    <div style={{fontSize:12,color:C.textMuted,marginTop:2}}>{c.venue}{c.code?` · ${c.code}`:""}</div>
+                  </div>
+                  <button onClick={()=>handlePick(c)} disabled={!!submittingFor} style={{...mkBtn("primary"),padding:"8px 14px",fontSize:12.5,flexShrink:0}}>{submittingFor===c.name?"Joining...":"Request to Join"}</button>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -959,6 +1096,7 @@ function useSharedState(key, initialValue, pollMs=4000) {
   const [synced, setSynced] = useState(false);
   const skipNextSave = useRef(false);
   const lastSaved = useRef(null);
+  const saveSeq = useRef(0);
   const backendReady = hasClaudeStorage() || firebaseConfigured();
 
   const remoteGet = async (k) => {
@@ -995,8 +1133,26 @@ function useSharedState(key, initialValue, pollMs=4000) {
     if (skipNextSave.current) { skipNextSave.current = false; return; }
     const serialized = JSON.stringify(value);
     if (serialized === lastSaved.current) return;
-    lastSaved.current = serialized;
-    (async () => { try { await remoteSet(key, serialized, value); } catch { /* best-effort */ } })();
+    // NOTE: lastSaved is intentionally NOT set here. Marking a value as
+    // "saved" before the write is confirmed caused a real bug: if the
+    // remote write was slow or failed (e.g. offline, permission denied,
+    // expired Firebase test-mode rules), the next poll would fetch the
+    // still-old remote data, see it didn't match this optimistically-set
+    // marker, and "correct" the local state back — silently deleting
+    // whatever was just added (e.g. a chat message) a few seconds later.
+    const seq = ++saveSeq.current;
+    (async () => {
+      try {
+        await remoteSet(key, serialized, value);
+        // Only trust this write as the source of truth if nothing newer
+        // has been queued since — otherwise a slow, older write finishing
+        // late could wrongly stomp the marker for a value that's already
+        // been superseded.
+        if (seq === saveSeq.current) lastSaved.current = serialized;
+      } catch { /* best-effort — leave lastSaved untouched so the next poll
+                   doesn't mistake this failed write for a successful one
+                   and roll the local change back. */ }
+    })();
   }, [value, synced, key]);
 
   useEffect(() => {
@@ -1024,6 +1180,7 @@ export default function App() {
   const [showSignup, setShowSignup] = useState(false);
   const [showParticipate, setShowParticipate] = useState(false);
   const [hasEnteredMUN, setHasEnteredMUN] = useState(false);
+  const [showMunList, setShowMunList] = useState(false);
   const [profileView, setProfileView] = useState(false);
   const [hostVenueDraft, setHostVenueDraft] = useState("");
   const [hostNewCommittee, setHostNewCommittee] = useState({name:"",fullName:"",topic:""});
@@ -1123,6 +1280,22 @@ export default function App() {
     {id:2,name:"DULMUN 2025",venue:"Delhi",   status:"active",  code:"77591", participatingSchools:[], hostSchool:null},
     {id:3,name:"CHMUN 2025", venue:"Bilaspur",status:"active",  code:"30924", participatingSchools:["St. Xavier's School","DPS Raipur","Bilaspur Public School"], hostSchool:"Bilaspur Public School"},
   ]);
+  // Which conference(s) is this account actually registered for? Most staff
+  // accounts (chair/cochair/host_school/school/president/gs) are provisioned
+  // for exactly one fixed conference at creation time, tracked on the flat
+  // user.conference/committee/country/school fields. Delegates can instead
+  // accumulate several over time via "Request to Participate" — those live
+  // in user.registrations. Either way, this always resolves to a list, and
+  // cross-checks each entry against the live conferences list so a
+  // suspended/deleted/ended conference never appears as enterable.
+  const myConferenceOptions = (() => {
+    const regs = (user?.registrations && user.registrations.length > 0)
+      ? user.registrations
+      : (user?.conference ? [{ conference: user.conference, school: user.school, committee: user.committee, country: user.country }] : []);
+    return regs
+      .map(r => ({ ...r, confObj: conferences.find(c => c.name === r.conference) }))
+      .filter(r => r.confObj && r.confObj.status !== "ended");
+  })();
   const [adminSchools, setAdminSchools] = useSharedState("accord:admin-schools", [
     {id:1,name:"St. Xavier's School",   city:"Mumbai",  status:"verified"},
     {id:2,name:"DPS Raipur",            city:"Raipur",  status:"verified"},
@@ -1294,49 +1467,81 @@ export default function App() {
     if (adminUsers.some(u=>u.email.toLowerCase()===data.email.trim().toLowerCase())) {
       return { ok:false, error:"An account with that email already exists. Try signing in instead." };
     }
+    const schoolName = (data.school || "").trim();
+    if (!schoolName) return { ok:false, error:"School is required." };
+    if (!adminSchools.some(s=>s.name.toLowerCase()===schoolName.toLowerCase())) {
+      setAdminSchools(ss=>[...ss, { id:Date.now(), name:schoolName, city:"", status:"pending" }]);
+    }
     const newAccount = {
       id: Date.now(), name: data.name.trim(), email: data.email.trim(), password: data.password,
       role: "delegate", committee: null, country: null, conference: null, status: "active",
+      school: schoolName,
     };
     setAdminUsers(us=>[...us, newAccount]);
     setUser(newAccount);
-    setActiveTab("dashboard"); setHasEnteredMUN(false); setShowSignup(false);
+    setActiveTab("dashboard"); setHasEnteredMUN(false); setShowMunList(false); setShowSignup(false);
     return { ok:true };
   };
 
   // ── Request to Participate: the ONLY way a profile ever gets a conference.
-  // Approval is automatic and deterministic — the chosen school must appear
-  // in that conference's admin/host-school-curated participatingSchools list.
-  const handleRequestParticipate = (conferenceName, schoolName) => {
+  // Approval is automatic and deterministic — the account's school (set at
+  // sign-up) must already appear in that conference's Host-School/Admin-
+  // curated participatingSchools list. No one needs to review this at
+  // request time, because the school was already vetted when it was added
+  // to that list in the first place. Additive: a delegate can be registered
+  // for several conferences at once (kept in `registrations`), rather than
+  // each request replacing the last. Which one they're actually inside is
+  // chosen separately, from the "Enter the MUN" list.
+  const handleRequestParticipate = (conferenceName) => {
     const conf = conferences.find(c=>c.name===conferenceName);
     if (!conf) return { ok:false, error:"That conference could not be found." };
-    if (!(conf.participatingSchools||[]).includes(schoolName)) {
-      return { ok:false, error:`${schoolName} is not registered as a participating school for ${conf.name}. Ask your school coordinator to check with the conference's Host School or Accord Admin.` };
+    if (conf.status !== "upcoming") return { ok:false, error:"This conference is no longer open for new registrations." };
+    if (!user.school) return { ok:false, error:"Your account isn't linked to a school yet. Contact Accord Admin to have one added." };
+    if (!(conf.participatingSchools||[]).includes(user.school)) {
+      return { ok:false, error:`${user.school} is not registered as a participating school for ${conf.name}. Ask your school coordinator to check with the conference's Host School or Accord Admin.` };
     }
-    setUser(u=>({...u, conference: conf.name, school: schoolName}));
-    setAdminUsers(us=>us.map(u=>u.email===user.email?{...u, conference: conf.name, school: schoolName}:u));
-    setShowParticipate(false); setHasEnteredMUN(false);
+    const addRegistration = (u) => {
+      const existing = (u.registrations && u.registrations.length > 0)
+        ? u.registrations
+        : (u.conference ? [{ conference: u.conference, school: u.school, committee: u.committee, country: u.country }] : []);
+      if (existing.some(r => r.conference === conf.name)) return { ...u, registrations: existing };
+      return { ...u, registrations: [...existing, { conference: conf.name, school: user.school, committee: null, country: null }] };
+    };
+    setUser(addRegistration);
+    setAdminUsers(us=>us.map(u=>u.email===user.email?addRegistration(u):u));
     return { ok:true, conference:conf };
   };
 
-  if (!user && showSignup) return <SignupPage onSubmit={handleSignup} onBack={()=>setShowSignup(false)} onSigninClick={()=>{setShowSignup(false);setShowLogin(true);}}/>;
+  if (!user && showSignup) return <SignupPage onSubmit={handleSignup} adminSchools={adminSchools} onBack={()=>setShowSignup(false)} onSigninClick={()=>{setShowSignup(false);setShowLogin(true);}}/>;
   if (!user && !showLogin) return <HomePage onEnter={()=>setShowLogin(true)} onSignup={()=>setShowSignup(true)} onParticipate={()=>{setShowParticipate(true);setShowLogin(true);}}/>;
   if (!user) return <LoginPage adminUsers={adminUsers} onBack={()=>setShowLogin(false)} onSignupClick={()=>{setShowLogin(false);setShowSignup(true);}} onLogin={u=>{setUser(u);setActiveTab("dashboard");setHasEnteredMUN(u.role==="admin");}}/>;
 
-  if (showParticipate) return <RequestToParticipatePage conferences={conferences} adminSchools={adminSchools} user={user} onSubmit={handleRequestParticipate} onBack={()=>setShowParticipate(false)}/>;
+  if (showParticipate) return <RequestToParticipatePage conferences={conferences} user={user} onSubmit={handleRequestParticipate} onBack={()=>setShowParticipate(false)} onDone={()=>{setShowParticipate(false);setHasEnteredMUN(false);setShowMunList(true);}}/>;
 
   if (!hasEnteredMUN) {
     if (profileView) {
       const isInstitutional = role==="school" || role==="host_school";
       const munsConducted = isInstitutional ? conferences.filter(c=>c.hostSchool===user.name) : [];
       const munsParticipated = isInstitutional ? conferences.filter(c=>(c.participatingSchools||[]).includes(user.name)) : [];
+      // Has this account ever actually joined a conference (school-approved
+      // or individual-approved)? A brand-new sign-up hasn't, and shouldn't
+      // earn role points, IP, a rank, or awards just for existing.
+      const hasParticipated = (u) => (u.registrations && u.registrations.length > 0) || !!u.conference;
+      const myConfCount = user.registrations && user.registrations.length > 0 ? user.registrations.length : (user.conference ? 1 : 0);
       const myPerf = role==="delegate" ? delegatePerformance(user.email, scorecardBundle) : null;
-      const myRolePoints = isInstitutional ? 0 : (ROLE_BASE_POINTS[role] ?? 10);
+      const myRolePoints = (isInstitutional || !hasParticipated(user)) ? 0 : (ROLE_BASE_POINTS[role] ?? 10);
       const myIP = myRolePoints + (myPerf?.points || 0);
-      const conferenceAccounts = adminUsers.filter(a=>a.conference===user.conference && a.role!=="admin" && a.role!=="school" && a.role!=="host_school");
-      const leaderboard = conferenceAccounts.map(a=>{
+      // Platform-wide leaderboard: every earning account on Accord, not just
+      // people in the conference you happen to be viewing from. (Performance
+      // points here reflect the currently-loaded committee's scorecard, so
+      // accounts in a different conference/committee are only ranked on
+      // their role points until you're viewing from their scorecard — the
+      // role-points signal alone is still accurate platform-wide.)
+      const earningAccounts = adminUsers.filter(a=>["delegate","president","gs","chair","cochair"].includes(a.role));
+      const leaderboard = earningAccounts.map(a=>{
+        const participated = hasParticipated(a);
         const perf = a.role==="delegate" ? delegatePerformance(a.email, scorecardBundle) : null;
-        const ip = (ROLE_BASE_POINTS[a.role]??10) + (perf?.points||0);
+        const ip = (participated ? (ROLE_BASE_POINTS[a.role]??10) : 0) + (perf?.points||0);
         return {email:a.email, name:a.name, ip};
       }).sort((a,b)=>b.ip-a.ip);
       const rankIdx = leaderboard.findIndex(l=>l.email===user.email);
@@ -1348,21 +1553,26 @@ export default function App() {
         {l:"MUNs Participated",v:munsParticipated.length},
         {l:"Account Type",v:currentRole.label},
       ] : [
-        {l:"MUNs Participated",v:1},
+        {l:"MUNs Participated",v:myConfCount},
         {l:"Total IP Points",v:myIP},
-        {l:"Conference Rank",v:rankIdx>=0?`#${myRank} / ${leaderboard.length}`:"—"},
+        {l:"Conference Rank",v:hasParticipated(user)&&rankIdx>=0?`#${myRank} / ${leaderboard.length}`:0},
         {l:"Awards Won",v:myPerf?.award?1:0},
       ];
       return (
         <div style={{minHeight:"100vh",background:C.bg,fontFamily:"system-ui"}}>
           <div style={{background:C.navy,padding:"20px 32px",display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
-            <button onClick={()=>setProfileView(false)} style={{background:"none",border:"none",color:"rgba(255,255,255,0.6)",fontSize:12,cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:4}}>← Back</button>
+            <div onClick={()=>{setProfileView(false);setShowMunList(false);}} style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",flexShrink:0}}>
+              <div style={{width:26,height:26,background:"rgba(255,255,255,0.12)",borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{color:"#fff",fontSize:13,fontWeight:700,fontFamily:"Georgia,serif"}}>A</span></div>
+              <span style={{fontWeight:700,fontSize:15,color:"#fff",fontFamily:"Georgia,serif"}}>Accord</span>
+            </div>
+            <div style={{width:1,height:24,background:"rgba(255,255,255,0.15)"}}/>
+            <button onClick={()=>{setProfileView(false);setShowMunList(true);}} style={{...mkBtn("primary"),padding:"9px 18px",fontSize:13}}>Enter the MUN →</button>
             <div style={{width:1,height:24,background:"rgba(255,255,255,0.15)"}}/>
             <div style={{background:currentRole.bg,color:currentRole.color,borderRadius:10,width:44,height:44,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:15,flexShrink:0}}>{user.name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase()}</div>
-            <div><div style={{fontWeight:700,fontSize:17,color:"#fff",fontFamily:"Georgia,serif"}}>{user.name}</div><div style={{fontSize:12,color:"rgba(255,255,255,0.5)",marginTop:2}}>{currentRole.label}{user.conference?` · ${user.conference}`:""}</div></div>
-            <div style={{marginLeft:"auto",display:"flex",gap:8,flexWrap:"wrap"}}>
-              {role==="delegate"&&<button onClick={()=>setShowParticipate(true)} style={{...mkBtn(),padding:"9px 16px",fontSize:13}}>{user.conference?"Switch Conference":"Request to Participate"}</button>}
-              {user.conference&&<button onClick={()=>setHasEnteredMUN(true)} style={{...mkBtn("primary"),padding:"9px 18px",fontSize:13}}>Enter the MUN →</button>}
+            <div><div style={{fontWeight:700,fontSize:17,color:"#fff",fontFamily:"Georgia,serif"}}>{user.name}</div><div style={{fontSize:12,color:"rgba(255,255,255,0.5)",marginTop:2}}>{currentRole.label}{user.school?` · ${user.school}`:""}{user.conference?` · ${user.conference}`:""}</div></div>
+            <div style={{marginLeft:"auto",display:"flex",gap:8,flexWrap:"wrap",alignItems:"center"}}>
+              {role==="delegate"&&<button onClick={()=>setShowParticipate(true)} style={{...mkBtn(),padding:"9px 16px",fontSize:13}}>Request to Participate</button>}
+              <button onClick={()=>{setUser(null);setHasEnteredMUN(false);setShowMunList(false);setProfileView(false);setShowLogin(false);setShowSignup(false);setShowParticipate(false);}} style={{...mkBtn(),padding:"9px 16px",fontSize:13}}>Sign out</button>
             </div>
           </div>
           <div style={{maxWidth:900,margin:"0 auto",padding:"28px 24px 60px"}}>
@@ -1372,7 +1582,11 @@ export default function App() {
 
             {!isInstitutional&&(
             <div style={card}>
-              <div style={cardTitle}>Your Performance — {user.conference}</div>
+              <div style={cardTitle}>Your Performance{user.conference?` — ${user.conference}`:""}</div>
+              {!hasParticipated(user) ? (
+                <div style={{fontSize:13,color:C.textMuted,padding:"8px 0"}}>No conferences participated yet. {role==="delegate"?"Use \"Request to Participate\" to join one.":"You'll see your performance here once you're placed in a conference."}</div>
+              ) : (
+              <>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"12px 0",borderBottom:`1px solid ${C.border}`}}>
                 <div>
                   <div style={{fontWeight:700,fontSize:14,color:C.navy}}>{currentRole.label}{user.committee?` — ${user.committee}`:""}{user.country?` · ${user.country}`:""}</div>
@@ -1402,6 +1616,8 @@ export default function App() {
                 <div style={{padding:"14px 0",fontSize:13,color:C.textMuted}}>There is no delegate-style performance evaluation for this role — IP reflects the responsibility of the position you currently hold.</div>
               )}
               <div style={{fontSize:11,color:C.textMuted,marginTop:6,paddingTop:14,borderTop:`1px solid ${C.border}`,lineHeight:1.6}}>Intellectual Performance (IP) is calculated from real, recorded activity on this platform: role points for the position you hold, plus performance points only once a Chair has actually approved your scorecard — never from invented history.</div>
+              </>
+              )}
             </div>
             )}
             {isInstitutional&&(
@@ -1418,7 +1634,7 @@ export default function App() {
             )}
 
             <div style={card}>
-              <div style={cardTitle}>Leaderboard — {user.conference}</div>
+              <div style={cardTitle}>Leaderboard — All Conferences</div>
               {topBoard.map((l,i)=>{
                 const isMe=l.email===user.email;
                 return (
@@ -1441,29 +1657,144 @@ export default function App() {
         </div>
       );
     }
-    return (
-      <div style={{minHeight:"100vh",background:"linear-gradient(135deg,#0f2044 0%,#1a3560 50%,#0f2044 100%)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",padding:20,fontFamily:"system-ui"}}>
-        <div style={{textAlign:"center",marginBottom:32}}>
-          <div style={{background:currentRole.bg,color:currentRole.color,borderRadius:12,width:60,height:60,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:20,margin:"0 auto 14px"}}>{user.name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase()}</div>
-          <div style={{fontSize:22,fontWeight:700,color:"#fff",fontFamily:"Georgia,serif"}}>Welcome, {user.name.split(" ")[0]}</div>
-          <div style={{fontSize:13,color:"rgba(255,255,255,0.55)",marginTop:6}}>{currentRole.label}{user.conference?` · ${user.conference}`:""}</div>
+    if (showMunList) {
+      const enterConference = (opt) => {
+        const patch = { conference: opt.confObj.name, school: opt.school ?? user.school, committee: opt.committee ?? user.committee, country: opt.country ?? user.country };
+        setUser(u=>({...u, ...patch}));
+        setAdminUsers(us=>us.map(u=>u.email===user.email?{...u, ...patch}:u));
+        setShowMunList(false);
+        setHasEnteredMUN(true);
+      };
+      return (
+        <div style={{minHeight:"100vh",background:C.bg,fontFamily:"system-ui"}}>
+          <div style={{background:C.navy,padding:"20px 32px",display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
+            <div onClick={()=>setShowMunList(false)} style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",flexShrink:0}}>
+              <div style={{width:26,height:26,background:"rgba(255,255,255,0.12)",borderRadius:6,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{color:"#fff",fontSize:13,fontWeight:700,fontFamily:"Georgia,serif"}}>A</span></div>
+              <span style={{fontWeight:700,fontSize:15,color:"#fff",fontFamily:"Georgia,serif"}}>Accord</span>
+            </div>
+          </div>
+          <div style={{maxWidth:640,margin:"0 auto",padding:"28px 24px 60px"}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,marginBottom:20}}>
+              <div style={{fontWeight:700,fontSize:20,color:C.navy,fontFamily:"Georgia,serif"}}>Your MUNs</div>
+              <button onClick={()=>setShowMunList(false)} style={{...mkBtn(),padding:"7px 16px",fontSize:12.5}}>← Back</button>
+            </div>
+            {myConferenceOptions.length===0 ? (
+              <div style={{...card,textAlign:"center",padding:"44px 24px"}}>
+                <div style={{fontSize:32,marginBottom:12}}>🔒</div>
+                <div style={{fontWeight:700,fontSize:15,color:C.navy,marginBottom:8}}>No MUN to enter yet</div>
+                <div style={{fontSize:13,color:C.textMuted,lineHeight:1.6,maxWidth:400,margin:"0 auto",marginBottom:role==="delegate"?20:0}}>You're not currently registered for any conference that's active or upcoming, so there's nothing to enter right now.</div>
+                {role==="delegate" && <button onClick={()=>{setShowMunList(false);setShowParticipate(true);}} style={{...mkBtn("primary"),padding:"10px 22px"}}>Request to Participate</button>}
+              </div>
+            ) : myConferenceOptions.map(opt=>(
+              <div key={opt.conference} style={{...card,display:"flex",justifyContent:"space-between",alignItems:"center",gap:14,flexWrap:"wrap"}}>
+                <div>
+                  <div style={{fontWeight:700,fontSize:15,color:C.navy}}>{opt.confObj.name}</div>
+                  <div style={{fontSize:12,color:C.textMuted,marginTop:3}}>{opt.confObj.venue}{opt.committee?` · ${opt.committee}`:""}{opt.country?` · ${opt.country}`:""}</div>
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:10}}>
+                  <span style={pill(opt.confObj.status)}>{opt.confObj.status==="active"?"Active":"Upcoming"}</span>
+                  <button onClick={()=>enterConference(opt)} style={mkBtn("primary")}>Enter →</button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <div style={{display:"flex",flexDirection:"column",gap:12,width:"100%",maxWidth:360}}>
-          <button onClick={()=>setProfileView(true)} style={{display:"flex",alignItems:"center",gap:14,width:"100%",padding:"18px 20px",borderRadius:12,border:"1px solid rgba(255,255,255,0.15)",background:"rgba(255,255,255,0.06)",color:"#fff",cursor:"pointer",textAlign:"left"}}>
-            <div style={{width:38,height:38,borderRadius:10,background:"rgba(255,255,255,0.1)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-            <div><div style={{fontWeight:600,fontSize:14}}>View Profile</div><div style={{fontSize:11,color:"rgba(255,255,255,0.5)",marginTop:2}}>Check your role, committee & details</div></div>
-          </button>
-          {user.conference?(
-            <button onClick={()=>setHasEnteredMUN(true)} style={{display:"flex",alignItems:"center",gap:14,width:"100%",padding:"18px 20px",borderRadius:12,border:"none",background:"#fff",color:C.navy,cursor:"pointer",textAlign:"left"}}>
-              <div style={{width:38,height:38,borderRadius:10,background:C.navyLight,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></div>
-              <div><div style={{fontWeight:700,fontSize:14}}>Enter the MUN</div><div style={{fontSize:11,color:C.textMuted,marginTop:2}}>Go to your dashboard</div></div>
-            </button>
-          ):(
-            <button onClick={()=>setShowParticipate(true)} style={{display:"flex",alignItems:"center",gap:14,width:"100%",padding:"18px 20px",borderRadius:12,border:"none",background:"#fff",color:C.navy,cursor:"pointer",textAlign:"left"}}>
-              <div style={{width:38,height:38,borderRadius:10,background:C.navyLight,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={C.navy} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></div>
-              <div><div style={{fontWeight:700,fontSize:14}}>Request to Participate</div><div style={{fontSize:11,color:C.textMuted,marginTop:2}}>You're not part of a conference yet</div></div>
-            </button>
-          )}
+      );
+    }
+    const goHome = () => { setProfileView(false); setShowMunList(false); };
+    const FEATURES = [
+      { icon:"🎤", title:"Speakers List", text:"Run the General Speakers List with structured queues and yield handling — no more paper sign-up sheets." },
+      { icon:"📊", title:"Scorecards & Awards", text:"Chairs evaluate delegates against a rubric; approved scores genuinely feed each delegate's IP and awards." },
+      { icon:"💬", title:"Committee Chat", text:"General and announcement channels for every committee, with file and media attachments." },
+      { icon:"🤖", title:"Alfred, your AI Attaché", text:"An in-platform assistant for rules of procedure, drafting help, and quick research — attachments included." },
+      { icon:"📚", title:"Professional Notes", text:"A living knowledge base of MUN procedure and best practice, curated by conference admins." },
+      { icon:"🏆", title:"IP Points & Leaderboard", text:"Genuine Intellectual Performance points from real, approved conference activity — never invented history." },
+    ];
+    const ROLES_INFO = [
+      { role:"President & Secretary-General", text:"Full visibility across every committee, dais, and delegate in their conference." },
+      { role:"Chair & Co-Chair", text:"Run the room — speakers list, scorecards, committee chat — for their own committee." },
+      { role:"Delegate", text:"Track your assignment, speak up, and build a genuine record of your performance." },
+    ];
+    const ROADMAP = [
+      "Collaborative resolution & amendment drafting tools",
+      "AI-assisted position paper feedback",
+      "Deeper analytics dashboards for organizers",
+      "Native mobile apps for delegates and chairs",
+    ];
+    return (
+      <div style={{minHeight:"100vh",background:C.bg,fontFamily:"system-ui",color:C.text}}>
+        <div style={{position:"sticky",top:0,zIndex:50,background:"rgba(255,255,255,0.92)",backdropFilter:"blur(6px)",borderBottom:`1px solid ${C.border}`,padding:"14px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:12}}>
+          <div onClick={goHome} style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}}>
+            <div style={{width:32,height:32,background:C.navy,borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center"}}><span style={{color:"#fff",fontSize:15,fontWeight:700,fontFamily:"Georgia,serif"}}>A</span></div>
+            <span style={{fontWeight:700,fontSize:18,color:C.navy,fontFamily:"Georgia,serif"}}>Accord</span>
+          </div>
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <button onClick={()=>setProfileView(true)} style={{...mkBtn(),padding:"9px 18px",fontSize:13}}>Profile</button>
+            <button onClick={()=>setShowMunList(true)} style={{...mkBtn("primary"),padding:"9px 18px",fontSize:13}}>Enter the MUN</button>
+            <button onClick={()=>{setUser(null);setHasEnteredMUN(false);setShowMunList(false);setProfileView(false);setShowLogin(false);setShowSignup(false);setShowParticipate(false);}} style={{...mkBtn(),padding:"9px 18px",fontSize:13}}>Sign out</button>
+          </div>
+        </div>
+
+        <div style={{background:`linear-gradient(135deg,${C.navy} 0%,#1a3560 60%,${C.navy} 100%)`,padding:"70px 24px 80px",textAlign:"center"}}>
+          <div style={{maxWidth:720,margin:"0 auto"}}>
+            <div style={{background:currentRole.bg,color:currentRole.color,borderRadius:12,width:60,height:60,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:20,margin:"0 auto 16px"}}>{user.name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase()}</div>
+            <div style={{fontSize:34,lineHeight:1.15,fontWeight:700,color:"#fff",fontFamily:"Georgia,serif",marginBottom:10}}>Welcome back, {user.name.split(" ")[0]}</div>
+            <div style={{fontSize:15,color:"rgba(255,255,255,0.65)",marginBottom:28}}>{currentRole.label}{user.school?` · ${user.school}`:""}</div>
+            <div style={{display:"flex",gap:12,justifyContent:"center",flexWrap:"wrap"}}>
+              <button onClick={()=>setShowMunList(true)} style={{...mkBtn("primary"),padding:"13px 26px",fontSize:15,fontWeight:600}}>Enter the MUN</button>
+              <button onClick={()=>setProfileView(true)} style={{padding:"13px 26px",fontSize:15,fontWeight:600,borderRadius:6,border:"1px solid rgba(255,255,255,0.3)",background:"transparent",color:"#fff",cursor:"pointer",fontFamily:"system-ui"}}>View Profile</button>
+              {role==="delegate" && <button onClick={()=>setShowParticipate(true)} style={{padding:"13px 26px",fontSize:15,fontWeight:600,borderRadius:6,border:"1px solid rgba(255,255,255,0.3)",background:"transparent",color:"#fff",cursor:"pointer",fontFamily:"system-ui"}}>Request to Participate</button>}
+            </div>
+          </div>
+        </div>
+
+        <div style={{maxWidth:960,margin:"0 auto",padding:"64px 24px"}}>
+          <div style={{textAlign:"center",marginBottom:48}}>
+            <div style={{fontSize:12,fontWeight:700,color:C.gold,letterSpacing:1.5,marginBottom:10}}>ABOUT ACCORD</div>
+            <div style={{fontSize:26,fontWeight:700,color:C.navy,fontFamily:"Georgia,serif",marginBottom:14}}>One platform for the whole conference</div>
+            <div style={{fontSize:15,color:C.textSec,lineHeight:1.8,maxWidth:640,margin:"0 auto"}}>Accord replaces the scattered spreadsheets, paper placards, and printed rules of procedure that most MUN conferences still run on — giving organizers, chairs, and delegates a single, real-time home for every committee.</div>
+          </div>
+
+          <div style={{fontSize:12,fontWeight:700,color:C.gold,letterSpacing:1.5,marginBottom:16,textAlign:"center"}}>WHAT'S INSIDE</div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:16,marginBottom:60}}>
+            {FEATURES.map(f=>(
+              <div key={f.title} style={{border:`1px solid ${C.border}`,borderRadius:12,padding:20,background:C.bgSoft}}>
+                <div style={{fontSize:26,marginBottom:10}}>{f.icon}</div>
+                <div style={{fontWeight:700,fontSize:14,color:C.navy,marginBottom:6}}>{f.title}</div>
+                <div style={{fontSize:13,color:C.textMuted,lineHeight:1.6}}>{f.text}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{fontSize:12,fontWeight:700,color:C.gold,letterSpacing:1.5,marginBottom:16,textAlign:"center"}}>BUILT FOR EVERY ROLE</div>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))",gap:14,marginBottom:60}}>
+            {ROLES_INFO.map(r=>(
+              <div key={r.role} style={{padding:"16px 18px",borderRadius:10,background:C.navyLight}}>
+                <div style={{fontWeight:700,fontSize:13,color:C.navy,marginBottom:6}}>{r.role}</div>
+                <div style={{fontSize:12.5,color:C.textSec,lineHeight:1.6}}>{r.text}</div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{background:C.navy,borderRadius:16,padding:"40px 36px",color:"#fff"}}>
+            <div style={{fontSize:12,fontWeight:700,color:"rgba(255,255,255,0.5)",letterSpacing:1.5,marginBottom:12}}>WHAT'S NEXT FOR ACCORD</div>
+            <div style={{fontSize:20,fontWeight:700,fontFamily:"Georgia,serif",marginBottom:18}}>Still growing, conference by conference</div>
+            <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(220px,1fr))",gap:12}}>
+              {ROADMAP.map(item=>(
+                <div key={item} style={{display:"flex",alignItems:"flex-start",gap:10,fontSize:13.5,color:"rgba(255,255,255,0.8)",lineHeight:1.6}}><span style={{color:C.gold,flexShrink:0}}>◆</span>{item}</div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div style={{textAlign:"center",padding:"36px 24px 48px"}}>
+          <div style={{fontSize:16,fontWeight:700,color:C.navy,fontFamily:"Georgia,serif",marginBottom:16}}>Ready to jump back in?</div>
+          <div style={{display:"flex",gap:10,justifyContent:"center",flexWrap:"wrap"}}>
+            <button onClick={()=>setShowMunList(true)} style={{...mkBtn("primary"),padding:"12px 28px",fontSize:14}}>Enter the MUN</button>
+            <button onClick={()=>setProfileView(true)} style={{...mkBtn(),padding:"12px 28px",fontSize:14}}>View Profile</button>
+            <button onClick={()=>{setUser(null);setHasEnteredMUN(false);setShowMunList(false);setProfileView(false);setShowLogin(false);setShowSignup(false);setShowParticipate(false);}} style={{...mkBtn(),padding:"12px 28px",fontSize:14}}>Sign out</button>
+          </div>
+          <div style={{fontSize:12,color:C.textMuted,marginTop:28}}>© 2025 Accord · Model United Nations Platform</div>
         </div>
       </div>
     );
@@ -1505,9 +1836,13 @@ export default function App() {
         {isPlatformAdmin?(
           <div style={{display:"flex",flexDirection:"column",gap:4,flex:"1 1 200px",minWidth:0,maxWidth:"100%"}}>
             <label style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.5}}>CONFERENCE</label>
-            <select value={effectiveConference} onChange={e=>setViewConference(e.target.value)} style={{...inputSt,width:"100%",maxWidth:"100%",background:"#fff",fontSize:13,padding:"6px 10px",boxSizing:"border-box"}}>
-              {conferences.map(c=><option key={c.id} value={c.name}>{c.name}</option>)}
-            </select>
+            <SearchableSelect
+              value={effectiveConference}
+              onChange={setViewConference}
+              options={conferences.map(c=>({value:c.name,label:c.name,code:c.code}))}
+              inputStyle={{...inputSt,width:"100%",maxWidth:"100%",background:"#fff",fontSize:13,padding:"6px 10px",boxSizing:"border-box"}}
+              placeholder="Type a conference name or code..."
+            />
           </div>
         ):(
           <div style={{fontSize:12,color:C.textMuted}}>Conference: <span style={{fontWeight:600,color:C.navy}}>{effectiveConference}</span></div>
@@ -1517,9 +1852,13 @@ export default function App() {
           {conferenceCommittees.length===0?(
             <span style={{fontSize:12,color:C.textMuted,fontStyle:"italic"}}>No committees registered for this conference yet</span>
           ):(
-            <select value={activeCommittee} onChange={e=>setActiveCommittee(e.target.value)} style={{...inputSt,width:"100%",maxWidth:"100%",background:"#fff",fontSize:13,padding:"6px 10px",boxSizing:"border-box"}}>
-              {conferenceCommittees.map(c=><option key={c.id} value={c.id}>{c.name} — {c.fullName}</option>)}
-            </select>
+            <SearchableSelect
+              value={activeCommittee}
+              onChange={setActiveCommittee}
+              options={conferenceCommittees.map(c=>({value:c.id,label:c.name,sublabel:c.fullName}))}
+              inputStyle={{...inputSt,width:"100%",maxWidth:"100%",background:"#fff",fontSize:13,padding:"6px 10px",boxSizing:"border-box"}}
+              placeholder="Type a committee name..."
+            />
           )}
         </div>
       </div>
@@ -1546,11 +1885,17 @@ export default function App() {
           {isPlatformAdmin&&(
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12,flexWrap:"wrap"}}>
               <label style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.5}}>VIEWING</label>
-              <select value={effectiveConference} onChange={e=>setViewConference(e.target.value)} style={{...inputSt,width:isMobile?"100%":"auto",maxWidth:"100%",background:"#fff",fontSize:13,padding:"6px 10px",boxSizing:"border-box"}}>
-                {conferences.map(c=><option key={c.id} value={c.name}>{c.name}</option>)}
-              </select>
-            </div>
-          )}
+              <div style={{width:isMobile?"100%":220}}>
+                <SearchableSelect
+                  value={effectiveConference}
+                  onChange={setViewConference}
+                  options={conferences.map(c=>({value:c.name,label:c.name,code:c.code}))}
+                  inputStyle={{...inputSt,width:"100%",maxWidth:"100%",background:"#fff",fontSize:13,padding:"6px 10px",boxSizing:"border-box"}}
+                  placeholder="Type a conference name or code..."
+                />
+              </div>
+        </div>
+      )}
           <div style={{display:"grid",gridTemplateColumns:isMobile?"1fr":"repeat(3,1fr)",gap:12,marginBottom:20}}>
             {[{l:"Committees",v:dashCommittees.length},{l:"Delegates",v:dashDelegates.length},{l:"Schools",v:dashParticipatingSchools.length}].map(s=>(<div key={s.l} style={{background:C.bgSoft,border:`1px solid ${C.border}`,borderRadius:10,padding:"16px 20px"}}><div style={{fontSize:26,fontWeight:700,color:C.navy}}>{s.v}</div><div style={{fontSize:12,color:C.textMuted,marginTop:2}}>{s.l}</div></div>))}
           </div>
@@ -1629,9 +1974,13 @@ export default function App() {
         {isPlatformAdmin&&(
           <div style={{padding:"0 16px 12px"}}>
             <div style={{fontSize:10,fontWeight:700,color:"#475569",letterSpacing:1.5,marginBottom:6}}>CONFERENCE</div>
-            <select value={effectiveConference} onChange={e=>setViewConference(e.target.value)} style={{width:"100%",maxWidth:"100%",boxSizing:"border-box",padding:"6px 8px",borderRadius:6,border:"1px solid rgba(255,255,255,0.15)",background:"rgba(255,255,255,0.06)",color:"#e2e8f0",fontSize:12}}>
-              {conferences.map(c=><option key={c.id} value={c.name} style={{color:"#0f2044"}}>{c.name}</option>)}
-            </select>
+            <SearchableSelect
+              value={effectiveConference}
+              onChange={setViewConference}
+              options={conferences.map(c=>({value:c.name,label:c.name,code:c.code}))}
+              inputStyle={{width:"100%",maxWidth:"100%",boxSizing:"border-box",padding:"6px 8px",borderRadius:6,border:"1px solid rgba(255,255,255,0.15)",background:"rgba(255,255,255,0.06)",color:"#e2e8f0",fontSize:12}}
+              placeholder="Type a conference name or code..."
+            />
           </div>
         )}
         <div style={{padding:"0 16px 8px",fontSize:10,fontWeight:700,color:"#475569",letterSpacing:1.5}}>{lvl<=4?"ALL COMMITTEES":"MY COMMITTEE"}</div>
@@ -2112,9 +2461,15 @@ export default function App() {
           {isPlatformAdmin&&(
             <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:16,padding:"12px 16px",background:C.bgSoft,border:`1px solid ${C.border}`,borderRadius:10,flexWrap:"wrap"}}>
               <label style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.5}}>CONFERENCE</label>
-              <select value={effectiveConference} onChange={e=>setViewConference(e.target.value)} style={{...inputSt,width:isMobile?"100%":"auto",maxWidth:"100%",background:"#fff",fontSize:13,padding:"6px 10px",boxSizing:"border-box"}}>
-                {conferences.map(c=><option key={c.id} value={c.name}>{c.name}</option>)}
-              </select>
+              <div style={{width:isMobile?"100%":220}}>
+                <SearchableSelect
+                  value={effectiveConference}
+                  onChange={setViewConference}
+                  options={conferences.map(c=>({value:c.name,label:c.name,code:c.code}))}
+                  inputStyle={{...inputSt,width:"100%",maxWidth:"100%",background:"#fff",fontSize:13,padding:"6px 10px",boxSizing:"border-box"}}
+                  placeholder="Type a conference name or code..."
+                />
+              </div>
             </div>
           )}
           {committeesInScope.length===0&&<div style={{...card,textAlign:"center",padding:40,color:C.textMuted,fontSize:13}}>No committees registered for {scopeConference} yet.</div>}
@@ -2489,14 +2844,14 @@ export default function App() {
           <div style={{width:20,height:2,background:navOpen?C.navy:C.textSec,borderRadius:2,transition:"all 0.2s",opacity:navOpen?0:1}}/>
           <div style={{width:20,height:2,background:navOpen?C.navy:C.textSec,borderRadius:2,transition:"all 0.2s",transform:navOpen?"rotate(-45deg) translateY(-6px)":"none"}}/>
         </button>
-        <div style={{display:"flex",alignItems:"center",gap:8,minWidth:0,overflow:"hidden"}}>
+        <div onClick={()=>{setHasEnteredMUN(false);setProfileView(false);setShowMunList(false);}} style={{display:"flex",alignItems:"center",gap:8,minWidth:0,overflow:"hidden",cursor:"pointer"}}>
           <div style={{width:24,height:24,background:C.navy,borderRadius:5,display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0}}><span style={{color:"#fff",fontSize:12,fontWeight:700,fontFamily:"Georgia,serif"}}>A</span></div>
           {!isMobile&&<span style={{fontWeight:700,fontSize:16,color:C.navy,fontFamily:"Georgia,serif"}}>Accord</span>}
         </div>
         <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:isMobile?6:8,fontFamily:"system-ui",flexShrink:0}}>
           {!isMobile&&<div style={{textAlign:"right"}}><div style={{fontSize:11,fontWeight:600,color:C.navy,lineHeight:1.2}}>{user.name}</div><div style={{fontSize:10,color:C.textMuted}}>{currentRole.label}</div></div>}
           <div style={{width:30,height:30,borderRadius:"50%",background:currentRole.bg,color:currentRole.color,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:11,flexShrink:0}}>{user.name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase()}</div>
-          <button onClick={()=>{setUser(null);setHasEnteredMUN(false);setProfileView(false);setShowLogin(false);setShowSignup(false);setShowParticipate(false);}} style={{...mkBtn(),padding:isMobile?"4px 8px":"4px 10px",fontSize:11}}>{isMobile?"Out":"Sign out"}</button>
+          <button onClick={()=>{setUser(null);setHasEnteredMUN(false);setShowMunList(false);setProfileView(false);setShowLogin(false);setShowSignup(false);setShowParticipate(false);}} style={{...mkBtn(),padding:isMobile?"4px 8px":"4px 10px",fontSize:11}}>{isMobile?"Out":"Sign out"}</button>
         </div>
       </div>
       <div style={{display:"flex",flex:1,overflow:"hidden",position:"relative"}}>
