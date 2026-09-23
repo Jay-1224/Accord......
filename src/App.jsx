@@ -279,6 +279,16 @@ function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConfere
   const [newCommittee, setNewCommittee] = useState({name:"",fullName:"",topic:""});
   const [viewingConf, setViewingConf] = useState(null);
   const [participantSearch, setParticipantSearch] = useState("");
+  const [pcNewCommittee, setPcNewCommittee] = useState({name:"",fullName:"",topic:""});
+  const [addParticipantCtx, setAddParticipantCtx] = useState(null); // { committeeName, allowedRoles } | null
+  const [apSchool, setApSchool] = useState("");
+  const [apMode, setApMode] = useState("existing"); // "existing" | "new"
+  const [apExistingEmail, setApExistingEmail] = useState("");
+  const [apNewName, setApNewName] = useState("");
+  const [apNewEmail, setApNewEmail] = useState("");
+  const [apRole, setApRole] = useState("");
+  const [apCountry, setApCountry] = useState("");
+  const [apError, setApError] = useState("");
   const [userSearch, setUserSearch] = useState("");
   const [showNewUser, setShowNewUser] = useState(false);
   const [newUser, setNewUser] = useState({name:"",email:"",role:"delegate",committee:"",country:"",conference:""});
@@ -433,37 +443,195 @@ function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConfere
             </div>
           )}
           {viewingConf&&(()=>{
-            const participants = adminUsers.filter(u=>u.conference===viewingConf.name).filter(u=>!participantSearch||u.name.toLowerCase().includes(participantSearch.toLowerCase())||u.email.toLowerCase().includes(participantSearch.toLowerCase())||u.role.toLowerCase().includes(participantSearch.toLowerCase())||(u.committee||"").toLowerCase().includes(participantSearch.toLowerCase()));
-            const grouped = {};
-            participants.forEach(p=>{ const key=p.committee||"General / Secretariat"; (grouped[key]=grouped[key]||[]).push(p); });
-            const groupNames = Object.keys(grouped).sort((a,b)=>a==="General / Secretariat"?-1:b==="General / Secretariat"?1:a.localeCompare(b));
+            const confName = viewingConf.name;
+            // A participant's assignment for THIS conference lives in their
+            // registrations array if they're a delegate holding several
+            // conferences at once; staff roles (chair/cochair/president/gs)
+            // are single-conference and use their flat fields directly —
+            // either way, this resolves to that conference's actual
+            // committee/country for this person, not whichever conference
+            // they currently happen to have "entered".
+            const forThisConf = adminUsers.map(u=>{
+              const regs = (u.registrations && u.registrations.length>0) ? u.registrations : (u.conference ? [{conference:u.conference,school:u.school,committee:u.committee,country:u.country}] : []);
+              const match = regs.find(r=>r.conference===confName);
+              return match ? { ...u, committee:match.committee, country:match.country, school:match.school||u.school } : null;
+            }).filter(Boolean);
+            const q = participantSearch.trim().toLowerCase();
+            const participants = forThisConf.filter(u=>!q||u.name.toLowerCase().includes(q)||u.email.toLowerCase().includes(q)||u.role.toLowerCase().includes(q)||(u.committee||"").toLowerCase().includes(q));
+            const topLevel = participants.filter(p=>p.role==="president"||p.role==="gs");
+            const confCommittees = committees.filter(c=>c.conference===confName);
+
+            const openAddParticipant = (committeeName, allowedRoles) => {
+              setAddParticipantCtx({committeeName, allowedRoles});
+              setApSchool(""); setApMode("existing"); setApExistingEmail(""); setApNewName(""); setApNewEmail(""); setApRole(allowedRoles[0]); setApCountry(""); setApError("");
+            };
+
+            const submitAddParticipant = () => {
+              if (!apSchool) { setApError("Choose a school."); return; }
+              if (!apRole) { setApError("Choose a role."); return; }
+              if (apRole==="delegate" && !apCountry.trim()) { setApError("Enter a country / portfolio."); return; }
+              const committeeName = addParticipantCtx.committeeName || null;
+              const applyAssignment = (u) => {
+                const committee = (apRole==="chair"||apRole==="cochair"||apRole==="delegate") ? committeeName : null;
+                const country = apRole==="delegate" ? apCountry.trim() : null;
+                // Every role (not just delegate) can now hold assignments at
+                // several conferences at once, so this always goes through
+                // the same registrations array — using flat fields here
+                // would silently overwrite a Chair/President/GS's assignment
+                // at whichever conference they were already in.
+                const existing = (u.registrations && u.registrations.length>0) ? u.registrations : (u.conference ? [{conference:u.conference,school:u.school,committee:u.committee,country:u.country}] : []);
+                const registrations = [...existing.filter(r=>r.conference!==confName), {conference:confName, school:apSchool, committee, country}];
+                const patch = { role: apRole, school: apSchool, registrations };
+                if (!u.conference) { patch.conference=confName; patch.committee=committee; patch.country=country; }
+                return { ...u, ...patch };
+              };
+              if (apMode==="existing") {
+                if (!apExistingEmail) { setApError("Choose a participant."); return; }
+                setAdminUsers(us=>us.map(u=>u.email===apExistingEmail?applyAssignment(u):u));
+                logAction(`Participant assigned: ${apExistingEmail} → ${apRole}${committeeName?` (${committeeName})`:""} — ${confName}`,"user");
+              } else {
+                if (!apNewName.trim()||!apNewEmail.trim()) { setApError("Enter a name and email."); return; }
+                if (adminUsers.some(u=>u.email.toLowerCase()===apNewEmail.trim().toLowerCase())) { setApError('An account with that email already exists — use "Existing account" instead.'); return; }
+                const newAccount = applyAssignment({ id:Date.now(), name:apNewName.trim(), email:apNewEmail.trim(), password:"accord123", status:"active" });
+                setAdminUsers(us=>[...us, newAccount]);
+                logAction(`New participant created: ${apNewName.trim()} → ${apRole}${committeeName?` (${committeeName})`:""} — ${confName}`,"user");
+              }
+              setAddParticipantCtx(null);
+            };
+
+            const schoolOptions = adminSchools.map(s=>({value:s.name,label:s.name,sublabel:s.city}));
+            const peopleAtSchool = apSchool ? adminUsers.filter(u=>u.school===apSchool) : [];
+
             return (
-              <div onClick={()=>setViewingConf(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:999,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
-                <div onClick={e=>e.stopPropagation()} style={{background:"#fff",borderRadius:12,padding:"26px 30px",width:560,maxWidth:"92vw",maxHeight:"80vh",display:"flex",flexDirection:"column",boxShadow:"0 16px 48px rgba(0,0,0,0.25)",fontFamily:"system-ui"}}>
-                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:4}}>
-                    <div><div style={{fontWeight:700,fontSize:17,color:C.navy}}>{viewingConf.name}</div><div style={{fontSize:12,color:C.textMuted,marginTop:2}}>{viewingConf.venue} · Code: <span style={{fontFamily:"monospace",fontWeight:700,color:C.navy}}>{viewingConf.code||"—"}</span></div></div>
-                    <button onClick={()=>setViewingConf(null)} style={{background:"none",border:"none",color:C.textMuted,fontSize:20,cursor:"pointer",lineHeight:1,padding:0}}>×</button>
-                  </div>
-                  <div style={{fontSize:12,color:C.textMuted,margin:"10px 0 12px"}}>{participants.length} participant{participants.length===1?"":"s"} across {groupNames.length} committee{groupNames.length===1?"":"s"}</div>
-                  <input value={participantSearch} onChange={e=>setParticipantSearch(e.target.value)} placeholder="Search by name, email, role or committee..." style={{...inputSt,marginBottom:14}}/>
-                  <div style={{overflowY:"auto",flex:1,paddingRight:4}}>
-                    {groupNames.length===0&&<div style={{textAlign:"center",padding:30,color:C.textMuted,fontSize:13}}>No participants match.</div>}
-                    {groupNames.map(g=>(
-                      <div key={g} style={{marginBottom:18}}>
-                        <div style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.8,textTransform:"uppercase",marginBottom:8,paddingBottom:6,borderBottom:`1px solid ${C.border}`}}>{g} <span style={{fontWeight:400}}>({grouped[g].length})</span></div>
-                        {grouped[g].map(p=>{
-                          const r=ROLES.find(x=>x.id===p.role);
-                          return (
-                            <div key={p.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 0",borderBottom:`1px solid ${C.border}`}}>
-                              <div><div style={{fontWeight:600,fontSize:13,color:C.navy}}>{p.name}{p.country?<span style={{fontWeight:400,color:C.textMuted}}> — {p.country}</span>:null}</div><div style={{fontSize:11,color:C.textMuted,marginTop:1}}>{p.email}</div></div>
-                              <span style={{...pill(""),background:r?.bg,color:r?.color,fontSize:10,flexShrink:0,marginLeft:10}}>{r?.label||p.role}</span>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    ))}
+              <div style={{position:"fixed",inset:0,background:C.bg,zIndex:999,overflowY:"auto",fontFamily:"system-ui"}}>
+                <div style={{background:C.navy,padding:"18px 28px",display:"flex",alignItems:"center",gap:14,flexWrap:"wrap"}}>
+                  <button onClick={()=>setViewingConf(null)} style={{background:"none",border:"none",color:"rgba(255,255,255,0.6)",fontSize:12,cursor:"pointer",padding:0,display:"flex",alignItems:"center",gap:4}}>← Back to Admin Panel</button>
+                  <div style={{width:1,height:22,background:"rgba(255,255,255,0.15)"}}/>
+                  <div>
+                    <div style={{fontWeight:700,fontSize:16,color:"#fff",fontFamily:"Georgia,serif"}}>{confName} — Participants</div>
+                    <div style={{fontSize:11,color:"rgba(255,255,255,0.5)",marginTop:1}}>{viewingConf.venue} · Code: <span style={{fontFamily:"monospace",fontWeight:700}}>{viewingConf.code||"—"}</span></div>
                   </div>
                 </div>
+
+                <div style={{maxWidth:820,margin:"0 auto",padding:"26px 24px 60px"}}>
+                  <div style={{fontSize:12,color:C.textMuted,marginBottom:14}}>{participants.length} participant{participants.length===1?"":"s"} across {confCommittees.length} committee{confCommittees.length===1?"":"s"}. Only Accord Admin can edit this roster.</div>
+                  <input value={participantSearch} onChange={e=>setParticipantSearch(e.target.value)} placeholder="Search by name, email, role or committee..." style={{...inputSt,marginBottom:20}}/>
+
+                  <div style={{...card}}>
+                    <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10}}>
+                      <div style={cardTitle}>President & Secretary-General</div>
+                      <button onClick={()=>openAddParticipant(null,["president","gs"])} style={{...mkBtn("primary"),padding:"6px 14px",fontSize:12}}>+ Add Participant</button>
+                    </div>
+                    {topLevel.length===0 && <div style={{fontSize:12.5,color:C.textMuted}}>No President or GS assigned yet.</div>}
+                    {topLevel.map(p=>{
+                      const r=ROLES.find(x=>x.id===p.role);
+                      return (
+                        <div key={p.email} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 0",borderBottom:`1px solid ${C.border}`}}>
+                          <div><div style={{fontWeight:600,fontSize:13,color:C.navy}}>{p.name}</div><div style={{fontSize:11,color:C.textMuted,marginTop:1}}>{p.email}{p.school?` · ${p.school}`:""}</div></div>
+                          <span style={{...pill(""),background:r?.bg,color:r?.color,fontSize:10,flexShrink:0,marginLeft:10}}>{r?.label||p.role}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",margin:"24px 0 12px"}}>
+                    <div style={{fontWeight:700,fontSize:15,color:C.navy}}>Committees</div>
+                  </div>
+                  <div style={{...card,marginBottom:16}}>
+                    <div style={{display:"flex",gap:6,flexWrap:"wrap"}}>
+                      <input value={pcNewCommittee.name} onChange={e=>setPcNewCommittee(p=>({...p,name:e.target.value}))} placeholder="Short name (e.g. UNSC)" style={{...inputSt,flex:"1 1 130px"}}/>
+                      <input value={pcNewCommittee.fullName} onChange={e=>setPcNewCommittee(p=>({...p,fullName:e.target.value}))} placeholder="Full name" style={{...inputSt,flex:"1 1 160px"}}/>
+                      <input value={pcNewCommittee.topic} onChange={e=>setPcNewCommittee(p=>({...p,topic:e.target.value}))} placeholder="Agenda topic" style={{...inputSt,flex:"1 1 160px"}}/>
+                      <button onClick={()=>{
+                        if(!pcNewCommittee.name.trim())return;
+                        const id=pcNewCommittee.name.trim().toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-"+Date.now();
+                        setCommittees(cm=>[...cm,{id,name:pcNewCommittee.name.trim(),fullName:pcNewCommittee.fullName.trim()||pcNewCommittee.name.trim(),topic:pcNewCommittee.topic.trim()||"To be announced",country:null,conference:confName}]);
+                        logAction(`Committee added to ${confName}: ${pcNewCommittee.name.trim()}`,"conf");
+                        setPcNewCommittee({name:"",fullName:"",topic:""});
+                      }} style={{...mkBtn("primary"),padding:"8px 16px",fontSize:12,flex:"0 0 auto"}}>+ Add Committee</button>
+                    </div>
+                  </div>
+
+                  {confCommittees.length===0 && <div style={{fontSize:13,color:C.textMuted,marginBottom:16}}>No committees yet — add one above.</div>}
+                  {confCommittees.map(c=>{
+                    const inThis = participants.filter(p=>p.committee===c.name);
+                    const staff = inThis.filter(p=>p.role==="chair"||p.role==="cochair");
+                    const dels = inThis.filter(p=>p.role==="delegate");
+                    return (
+                      <div key={c.id} style={{...card,marginBottom:14}}>
+                        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:10,flexWrap:"wrap",gap:8}}>
+                          <div><span style={{fontWeight:700,fontSize:14,color:C.navy}}>{c.name}</span><span style={{fontSize:12,color:C.textMuted,marginLeft:8}}>{c.fullName}</span></div>
+                          <button onClick={()=>openAddParticipant(c.name,["chair","cochair","delegate"])} style={{...mkBtn("primary"),padding:"6px 14px",fontSize:12}}>+ Add Participant</button>
+                        </div>
+                        {staff.length===0&&dels.length===0 && <div style={{fontSize:12.5,color:C.textMuted}}>No participants assigned to this committee yet.</div>}
+                        {staff.map(p=>{
+                          const r=ROLES.find(x=>x.id===p.role);
+                          return (<div key={p.email} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"7px 0",borderBottom:`1px solid ${C.border}`}}><div><div style={{fontWeight:600,fontSize:13,color:C.navy}}>{p.name}</div><div style={{fontSize:11,color:C.textMuted}}>{p.email}{p.school?` · ${p.school}`:""}</div></div><span style={{...pill(""),background:r?.bg,color:r?.color,fontSize:10}}>{r?.label}</span></div>);
+                        })}
+                        {dels.map(p=>(
+                          <div key={p.email} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"7px 0",borderBottom:`1px solid ${C.border}`}}>
+                            <div><div style={{fontWeight:600,fontSize:13,color:C.navy}}>{p.name}{p.country?<span style={{fontWeight:400,color:C.textMuted}}> — {p.country}</span>:<span style={{fontWeight:400,color:C.amber}}> — country pending</span>}</div><div style={{fontSize:11,color:C.textMuted}}>{p.email}{p.school?` · ${p.school}`:""}</div></div>
+                            <span style={{...pill(""),background:ROLES.find(x=>x.id==="delegate")?.bg,color:ROLES.find(x=>x.id==="delegate")?.color,fontSize:10}}>Delegate</span>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {addParticipantCtx&&(
+                  <div onClick={()=>setAddParticipantCtx(null)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.45)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:20}}>
+                    <div onClick={e=>e.stopPropagation()} style={{background:"#fff",borderRadius:12,padding:"26px 30px",width:440,maxWidth:"92vw",maxHeight:"85vh",overflowY:"auto",boxShadow:"0 16px 48px rgba(0,0,0,0.25)",fontFamily:"system-ui",boxSizing:"border-box"}}>
+                      <div style={{fontWeight:700,fontSize:16,color:C.navy,marginBottom:4}}>Add Participant</div>
+                      <div style={{fontSize:12,color:C.textMuted,marginBottom:18}}>{addParticipantCtx.committeeName ? `To ${addParticipantCtx.committeeName} — ${confName}` : `President / GS — ${confName}`}</div>
+
+                      <div style={{marginBottom:14}}>
+                        <label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>SCHOOL</label>
+                        <SearchableSelect value={apSchool} onChange={v=>{setApSchool(v);setApExistingEmail("");setApError("");}} options={schoolOptions} placeholder="Type a school name..." inputStyle={{...inputSt,background:"#fff"}}/>
+                      </div>
+
+                      <div style={{display:"flex",gap:8,marginBottom:14}}>
+                        <button onClick={()=>setApMode("existing")} style={{flex:1,padding:"8px",borderRadius:7,border:`1px solid ${apMode==="existing"?C.navy:C.border}`,background:apMode==="existing"?C.navyLight:"#fff",color:C.navy,fontWeight:600,fontSize:12.5,cursor:"pointer"}}>Existing account</button>
+                        <button onClick={()=>setApMode("new")} style={{flex:1,padding:"8px",borderRadius:7,border:`1px solid ${apMode==="new"?C.navy:C.border}`,background:apMode==="new"?C.navyLight:"#fff",color:C.navy,fontWeight:600,fontSize:12.5,cursor:"pointer"}}>New participant</button>
+                      </div>
+
+                      {apMode==="existing" ? (
+                        <div style={{marginBottom:14}}>
+                          <label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>PARTICIPANT</label>
+                          {!apSchool ? (
+                            <div style={{fontSize:12.5,color:C.textMuted}}>Choose a school first.</div>
+                          ) : peopleAtSchool.length===0 ? (
+                            <div style={{fontSize:12.5,color:C.textMuted}}>No existing accounts for {apSchool} yet — switch to "New participant" to create one.</div>
+                          ) : (
+                            <SearchableSelect value={apExistingEmail} onChange={v=>{setApExistingEmail(v);setApError("");}} options={peopleAtSchool.map(u=>({value:u.email,label:u.name,sublabel:u.email}))} placeholder="Type a name..." inputStyle={{...inputSt,background:"#fff"}}/>
+                          )}
+                        </div>
+                      ) : (
+                        <>
+                          <div style={{marginBottom:12}}><label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>FULL NAME</label><input value={apNewName} onChange={e=>{setApNewName(e.target.value);setApError("");}} placeholder="e.g. Rahul Sharma" style={inputSt}/></div>
+                          <div style={{marginBottom:14}}><label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>EMAIL</label><input type="email" value={apNewEmail} onChange={e=>{setApNewEmail(e.target.value);setApError("");}} placeholder="e.g. rahul@school.edu" style={inputSt}/></div>
+                          <div style={{fontSize:11.5,color:C.textMuted,marginBottom:14,lineHeight:1.5}}>Creates a new account with password <span style={{fontFamily:"monospace",fontWeight:700}}>accord123</span> — share this with the participant so they can sign in.</div>
+                        </>
+                      )}
+
+                      <div style={{marginBottom:14}}>
+                        <label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>ROLE</label>
+                        <SearchableSelect value={apRole} onChange={v=>{setApRole(v);setApError("");}} options={addParticipantCtx.allowedRoles.map(rid=>({value:rid,label:ROLES.find(x=>x.id===rid)?.label||rid}))} placeholder="Choose a role..." inputStyle={{...inputSt,background:"#fff"}}/>
+                      </div>
+
+                      {apRole==="delegate"&&(
+                        <div style={{marginBottom:14}}><label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>COUNTRY / PORTFOLIO</label><input value={apCountry} onChange={e=>{setApCountry(e.target.value);setApError("");}} placeholder="e.g. France" style={inputSt}/></div>
+                      )}
+
+                      {apError&&<div style={{background:C.redBg,color:C.redTxt,borderRadius:7,padding:"10px 14px",fontSize:13,marginBottom:14,border:"1px solid #fecaca"}}>{apError}</div>}
+
+                      <div style={{display:"flex",gap:10,marginTop:8}}>
+                        <button onClick={()=>setAddParticipantCtx(null)} style={{...mkBtn(),flex:1}}>Cancel</button>
+                        <button onClick={submitAddParticipant} style={{...mkBtn("primary"),flex:1}}>Add</button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })()}
@@ -478,17 +646,23 @@ function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConfere
           <div style={{...card,padding:0,overflow:"hidden"}}>
             <div style={{overflowX:"auto"}}>
             <table style={{width:"100%",borderCollapse:"collapse",fontSize:13}}>
-              <thead><tr style={{background:C.bgSoft,borderBottom:`2px solid ${C.border}`}}>{["Name","Email","Role","Committee","Conference","Status","Actions"].map(h=>(<th key={h} style={{textAlign:"left",padding:"10px 14px",fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.8,whiteSpace:"nowrap"}}>{h}</th>))}</tr></thead>
+              <thead><tr style={{background:C.bgSoft,borderBottom:`2px solid ${C.border}`}}>{["Name","Email","School","Conferences","Status","Actions"].map(h=>(<th key={h} style={{textAlign:"left",padding:"10px 14px",fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.8,whiteSpace:"nowrap"}}>{h}</th>))}</tr></thead>
               <tbody>
                 {visibleUsers.filter(u=>!userSearch||u.name.toLowerCase().includes(userSearch.toLowerCase())||u.email.toLowerCase().includes(userSearch.toLowerCase())||u.role.includes(userSearch.toLowerCase())).map(u=>{
-                  const r=ROLES.find(x=>x.id===u.role);
+                  // A user is no longer tied to a single role or conference —
+                  // roles and registrations can differ per conference, so
+                  // this table sticks to account-level info only, plus how
+                  // many conferences they're registered for (not which role
+                  // they hold in each, which varies).
+                  const regs = (u.registrations && u.registrations.length > 0) ? u.registrations : (u.conference ? [{conference:u.conference}] : []);
                   return (
                     <tr key={u.id} style={{borderBottom:`1px solid ${C.border}`}}>
                       <td style={{padding:"10px 14px",fontWeight:600,color:C.navy}}>{u.name}</td>
                       <td style={{padding:"10px 14px",color:C.textSec,fontSize:12}}>{u.email}</td>
-                      <td style={{padding:"10px 14px"}}><span style={{...pill(""),background:r?.bg,color:r?.color,fontSize:10}}>{u.role}</span></td>
-                      <td style={{padding:"10px 14px",color:C.textMuted,fontSize:12}}>{u.committee||"—"}</td>
-                      <td style={{padding:"10px 14px",color:C.textMuted,fontSize:12}}>{u.conference||"—"}</td>
+                      <td style={{padding:"10px 14px",color:C.textMuted,fontSize:12}}>{u.school||"—"}</td>
+                      <td style={{padding:"10px 14px",color:C.textMuted,fontSize:12}} title={regs.map(r=>r.conference).join(", ")}>
+                        {regs.length}
+                      </td>
                       <td style={{padding:"10px 14px"}}><span style={pill(u.status==="active"?"active":"locked")}>{u.status}</span></td>
                       <td style={{padding:"10px 14px"}}><div style={{display:"flex",gap:6}}><button onClick={()=>{setAdminUsers(us=>us.map(x=>x.id===u.id?{...x,status:x.status==="active"?"suspended":"active"}:x));logAction(`User ${u.status==="active"?"suspended":"restored"}: ${u.name}`,"user");}} style={{...mkBtn(u.status==="active"?"danger":"success"),padding:"3px 10px",fontSize:11}}>{u.status==="active"?"Suspend":"Restore"}</button><button onClick={()=>{setAdminUsers(us=>us.filter(x=>x.id!==u.id));logAction(`User removed: ${u.name}`,"user");}} style={{...mkBtn("danger"),padding:"3px 8px",fontSize:11}}>✕</button></div></td>
                     </tr>
@@ -1004,7 +1178,7 @@ function RequestToParticipatePage({ conferences, user, onSubmit, onBack, onDone 
         <div style={{background:"#fff",borderRadius:14,padding:"28px 32px",width:"100%",maxWidth:420,boxShadow:"0 24px 60px rgba(0,0,0,0.3)",boxSizing:"border-box",textAlign:"center"}}>
           <div style={{fontSize:32,marginBottom:10}}>✅</div>
           <div style={{fontWeight:700,fontSize:15,color:C.navy,marginBottom:8}}>You're in!</div>
-          <div style={{fontSize:13,color:C.textMuted,lineHeight:1.6,marginBottom:20}}>You've been registered for {doneConf.name}. You can enter it any time from "Your MUNs."</div>
+          <div style={{fontSize:13,color:C.textMuted,lineHeight:1.6,marginBottom:20}}>You've been registered for {doneConf.name}. Your committee and country assignment is set by Accord Admin — you'll see it as soon as it's ready. You can enter the conference any time from "Your MUNs."</div>
           <button onClick={()=> (onDone ? onDone() : onBack && onBack())} style={{...mkBtn("primary"),width:"100%",padding:"11px",fontSize:14}}>Done</button>
         </div>
       </div>
@@ -1084,6 +1258,26 @@ async function fbSet(key, value) {
   });
   if (!res.ok) throw new Error("Firebase write failed: " + res.status);
   return res.json();
+}
+
+// Local (not cross-user) state that survives a page refresh, via
+// localStorage. Without this, a full browser reload — which resets every
+// plain useState back to its default — always dropped the person back to
+// the signed-out home page, no matter which screen or login session they
+// were actually on. This is unrelated to which host serves the page
+// (GitHub Pages, Vercel, etc.); it's inherent to a single-page app with no
+// session persistence at all, so it fixes the same way everywhere.
+function usePersistedState(key, defaultValue) {
+  const [value, setValue] = useState(() => {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw !== null ? JSON.parse(raw) : defaultValue;
+    } catch { return defaultValue; }
+  });
+  useEffect(() => {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* storage unavailable — session just won't persist */ }
+  }, [key, value]);
+  return [value, setValue];
 }
 
 // Shared, cross-user state — backed by window.storage inside Claude.ai, or
@@ -1171,21 +1365,21 @@ function useSharedState(key, initialValue, pollMs=4000) {
     return () => clearInterval(id);
   }, [key, pollMs]);
 
-  return [value, setValue];
+  return [value, setValue, synced];
 }
 
 export default function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = usePersistedState("accord:session-user", null);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [showParticipate, setShowParticipate] = useState(false);
-  const [hasEnteredMUN, setHasEnteredMUN] = useState(false);
+  const [hasEnteredMUN, setHasEnteredMUN] = usePersistedState("accord:session-entered-mun", false);
   const [showMunList, setShowMunList] = useState(false);
   const [profileView, setProfileView] = useState(false);
   const [hostVenueDraft, setHostVenueDraft] = useState("");
   const [hostNewCommittee, setHostNewCommittee] = useState({name:"",fullName:"",topic:""});
-  const [activeTab, setActiveTab] = useState("dashboard");
-  const [activeCommittee, setActiveCommittee] = useState("unsc");
+  const [activeTab, setActiveTab] = usePersistedState("accord:session-active-tab", "dashboard");
+  const [activeCommittee, setActiveCommittee] = usePersistedState("accord:session-active-committee", "unsc");
   const [viewConference, setViewConference] = useState("");
   // Committees belong to a specific conference (tagged via `.conference`), and
   // are created/edited by Platform Admin or that conference's Host School —
@@ -1304,7 +1498,21 @@ export default function App() {
   // Every account on the platform — seeded from the demo staff accounts, plus
   // anyone who has signed up themselves since. Shared so a new sign-up can log
   // back in from any session, and so Admin Panel sees them immediately.
-  const [adminUsers, setAdminUsers] = useSharedState("accord:platform-users", DEMO_ACCOUNTS.map((a,i)=>({...a,id:i+1,status:"active"})));
+  const [adminUsers, setAdminUsers, adminUsersSynced] = useSharedState("accord:platform-users", DEMO_ACCOUNTS.map((a,i)=>({...a,id:i+1,status:"active"})));
+  // adminUsers syncs from the shared backend independently of `user` (which
+  // is just a local copy taken at login/refresh). Without this, a person
+  // already logged in wouldn't see a new committee/country assignment, a
+  // status change, or anything else Admin does to their account until they
+  // logged out and back in. Gated on adminUsersSynced: before the real
+  // backend data has loaded, adminUsers is just the hardcoded demo seed, so
+  // a real (non-demo) account wouldn't be "found" yet — that must never be
+  // read as "this account was deleted".
+  useEffect(() => {
+    if (!user || !adminUsersSynced) return;
+    const fresh = adminUsers.find(a => a.email === user.email);
+    if (!fresh) { setUser(null); setHasEnteredMUN(false); return; } // account removed by Admin — don't keep them "logged in" to a ghost account
+    if (JSON.stringify(fresh) !== JSON.stringify(user)) setUser(fresh);
+  }, [adminUsers, adminUsersSynced, user]);
 
   const speakerRef = useRef(null);
   const customTimerRef = useRef(null);
