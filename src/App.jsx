@@ -264,6 +264,43 @@ function SpeakerTimer({ canControl, speakers, setSpeakers, speakerTime, setSpeak
   );
 }
 
+// Conference dates: stored as YYYY-MM-DD strings. multiDay=false means a
+// single-day conference (only startDate is used).
+function formatConfDate(conf) {
+  if (!conf || !conf.startDate) return "";
+  const fmt = (d) => { const dt = new Date(d + "T00:00:00"); return isNaN(dt) ? d : dt.toLocaleDateString("en-IN", { day:"numeric", month:"short", year:"numeric" }); };
+  if (conf.multiDay && conf.endDate && conf.endDate !== conf.startDate) return `${fmt(conf.startDate)} – ${fmt(conf.endDate)}`;
+  return fmt(conf.startDate);
+}
+
+// Date picker shared by the New Conference and Edit Conference forms:
+// a one-day / multi-day toggle, then one date or a start + end date.
+function ConfDateFields({ value, onChange }) {
+  const lab = { fontSize:11, fontWeight:600, color:C.textSec, display:"block", marginBottom:5, letterSpacing:0.5 };
+  const tab = (active) => ({ flex:1, padding:"7px", borderRadius:7, border:`1px solid ${active?C.navy:C.border}`, background:active?C.navyLight:"#fff", color:C.navy, fontWeight:600, fontSize:12, cursor:"pointer" });
+  return (
+    <div style={{marginBottom:14}}>
+      <label style={lab}>CONFERENCE DATE</label>
+      <div style={{display:"flex",gap:8,marginBottom:10}}>
+        <button type="button" onClick={()=>onChange({multiDay:false,endDate:""})} style={tab(!value.multiDay)}>One day</button>
+        <button type="button" onClick={()=>onChange({multiDay:true})} style={tab(!!value.multiDay)}>Multiple days</button>
+      </div>
+      <div style={{display:"flex",gap:10}}>
+        <div style={{flex:1}}>
+          {value.multiDay && <div style={{fontSize:10.5,color:C.textMuted,marginBottom:4}}>Start date</div>}
+          <input type="date" value={value.startDate||""} onChange={e=>onChange({startDate:e.target.value, ...(value.endDate && e.target.value > value.endDate ? {endDate:e.target.value} : {})})} style={inputSt}/>
+        </div>
+        {value.multiDay && (
+          <div style={{flex:1}}>
+            <div style={{fontSize:10.5,color:C.textMuted,marginBottom:4}}>End date</div>
+            <input type="date" value={value.endDate||""} min={value.startDate||undefined} onChange={e=>onChange({endDate:e.target.value})} style={inputSt}/>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConferences, adminSchools, setAdminSchools, adminUsers, setAdminUsers, committees, setCommittees }) {
   const [adminTab, setAdminTab] = useState("overview");
   const [isMobile, setIsMobile] = useState(typeof window!=="undefined" ? window.innerWidth<=760 : false);
@@ -274,7 +311,7 @@ function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConfere
     return ()=>window.removeEventListener("resize",onResize);
   },[]);
   const [showNewConf, setShowNewConf] = useState(false);
-  const [newConf, setNewConf] = useState({name:"",venue:""});
+  const [newConf, setNewConf] = useState({name:"",venue:"",multiDay:false,startDate:"",endDate:""});
   const [managedConf, setManagedConf] = useState(null);
   const [newCommittee, setNewCommittee] = useState({name:"",fullName:"",topic:""});
   const [viewingConf, setViewingConf] = useState(null);
@@ -349,7 +386,7 @@ function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConfere
           {visibleConferences.map(c=>(
             <div key={c.id} style={{...card,marginBottom:12}}>
               <div style={{display:"flex",justifyContent:"space-between",alignItems:isMobile?"flex-start":"center",flexWrap:"wrap",gap:12}}>
-                <div style={{minWidth:0}}><div style={{fontWeight:700,fontSize:15,color:C.navy}}>{c.name} <span style={{fontWeight:400,fontSize:13,color:C.textMuted}}>— {c.venue}</span></div><div style={{display:"inline-flex",alignItems:"center",gap:6,marginTop:6,background:C.navyLight,borderRadius:6,padding:"3px 10px"}}><span style={{fontSize:10,fontWeight:700,color:C.navy,letterSpacing:0.6}}>MUN CODE</span><span style={{fontSize:13,fontWeight:700,color:C.navy,letterSpacing:1,fontFamily:"monospace"}}>{c.code||"—"}</span></div><div style={{display:"flex",gap:20,marginTop:10,flexWrap:"wrap"}}>{[{l:"Committees",v:committeesCountFor(c.name)},{l:"Delegates",v:delegatesCountFor(c.name)},{l:"Schools",v:schoolsCountFor(c.name)}].map(s=>(<div key={s.l}><div style={{fontSize:20,fontWeight:700,color:C.navy}}>{s.v}</div><div style={{fontSize:11,color:C.textMuted}}>{s.l}</div></div>))}</div></div>
+                <div style={{minWidth:0}}><div style={{fontWeight:700,fontSize:15,color:C.navy}}>{c.name} <span style={{fontWeight:400,fontSize:13,color:C.textMuted}}>— {c.venue}</span></div>{c.startDate&&<div style={{fontSize:12,color:C.textSec,marginTop:3}}>📅 {formatConfDate(c)}{c.multiDay&&c.endDate&&c.endDate!==c.startDate?" (multi-day)":""}</div>}<div style={{display:"inline-flex",alignItems:"center",gap:6,marginTop:6,background:C.navyLight,borderRadius:6,padding:"3px 10px"}}><span style={{fontSize:10,fontWeight:700,color:C.navy,letterSpacing:0.6}}>MUN CODE</span><span style={{fontSize:13,fontWeight:700,color:C.navy,letterSpacing:1,fontFamily:"monospace"}}>{c.code||"—"}</span></div><div style={{display:"flex",gap:20,marginTop:10,flexWrap:"wrap"}}>{[{l:"Committees",v:committeesCountFor(c.name)},{l:"Delegates",v:delegatesCountFor(c.name)},{l:"Schools",v:schoolsCountFor(c.name)}].map(s=>(<div key={s.l}><div style={{fontSize:20,fontWeight:700,color:C.navy}}>{s.v}</div><div style={{fontSize:11,color:C.textMuted}}>{s.l}</div></div>))}</div></div>
                 <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap",width:isMobile?"100%":"auto"}}>
                   <span style={pill(c.status)}>{c.status==="active"?"Active":"Upcoming"}</span>
                   <button onClick={()=>{setViewingConf(c);setParticipantSearch("");}} style={{...mkBtn(),padding:"6px 14px",fontSize:12}}>Participants</button>
@@ -368,9 +405,10 @@ function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConfere
                 {[{l:"Conference Name",k:"name",ph:"e.g. BMUN 2025"},{l:"Venue / City",k:"venue",ph:"e.g. Bangalore"}].map(f=>(
                   <div key={f.k} style={{marginBottom:14}}><label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:6,letterSpacing:0.5}}>{f.l.toUpperCase()}</label><input value={newConf[f.k]} onChange={e=>setNewConf(p=>({...p,[f.k]:e.target.value}))} placeholder={f.ph} style={inputSt}/></div>
                 ))}
+                <ConfDateFields value={newConf} onChange={patch=>setNewConf(p=>({...p,...patch}))}/>
                 <div style={{display:"flex",gap:10,marginTop:8}}>
                   <button onClick={()=>setShowNewConf(false)} style={{...mkBtn(),flex:1}}>Cancel</button>
-                  <button onClick={()=>{if(!newConf.name||!newConf.venue)return;const code=generateMunCode(conferences.map(c=>c.code));setConferences(cs=>[...cs,{id:Date.now(),name:newConf.name,venue:newConf.venue,status:"upcoming",code,participatingSchools:[],hostSchool:null}]);logAction(`New conference created: ${newConf.name} – ${newConf.venue} (MUN Code: ${code})`,"conf");setNewConf({name:"",venue:""});setShowNewConf(false);}} style={{...mkBtn("primary"),flex:1}}>Create</button>
+                  <button onClick={()=>{if(!newConf.name||!newConf.venue)return;const code=generateMunCode(conferences.map(c=>c.code));setConferences(cs=>[...cs,{id:Date.now(),name:newConf.name,venue:newConf.venue,status:"upcoming",code,participatingSchools:[],hostSchool:null,multiDay:!!newConf.multiDay,startDate:newConf.startDate||"",endDate:newConf.multiDay?(newConf.endDate||newConf.startDate||""):""}]);logAction(`New conference created: ${newConf.name} – ${newConf.venue} (MUN Code: ${code})`,"conf");setNewConf({name:"",venue:"",multiDay:false,startDate:"",endDate:""});setShowNewConf(false);}} style={{...mkBtn("primary"),flex:1}}>Create</button>
                 </div>
               </div>
             </div>
@@ -382,6 +420,7 @@ function AdminPanel({ knowledgeNotes, setKnowledgeNotes, conferences, setConfere
                 {[{l:"Name",k:"name"},{l:"Venue",k:"venue"}].map(f=>(
                   <div key={f.k} style={{marginBottom:12}}><label style={{fontSize:11,fontWeight:600,color:C.textSec,display:"block",marginBottom:5,letterSpacing:0.5}}>{f.l.toUpperCase()}</label><input value={managedConf[f.k]} onChange={e=>setManagedConf(p=>({...p,[f.k]:e.target.value}))} style={inputSt}/></div>
                 ))}
+                <ConfDateFields value={managedConf} onChange={patch=>setManagedConf(p=>({...p,...patch}))}/>
                 <div style={{display:"flex",gap:16,margin:"12px 0 4px",padding:"10px 12px",background:C.bgSoft,borderRadius:8}}>
                   {[{l:"Committees",v:committees.filter(c=>c.conference===managedConf.name).length},{l:"Delegates",v:delegatesCountFor(managedConf.name)},{l:"Schools",v:(managedConf.participatingSchools||[]).length}].map(s=>(<div key={s.l}><div style={{fontSize:16,fontWeight:700,color:C.navy}}>{s.v}</div><div style={{fontSize:10,color:C.textMuted}}>{s.l}</div></div>))}
                 </div>
@@ -1514,6 +1553,60 @@ export default function App() {
     if (JSON.stringify(fresh) !== JSON.stringify(user)) setUser(fresh);
   }, [adminUsers, adminUsersSynced, user]);
 
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  // Has this account ever actually joined a conference? A brand-new sign-up
+  // hasn't, and shouldn't earn role points, IP, a rank, or awards for existing.
+  const hasParticipated = (u) => (u.registrations && u.registrations.length > 0) || !!u.conference;
+  // Platform-wide leaderboard (not conference-specific). Computed here, once,
+  // so the "IP Points" header button can open it from any page. Performance
+  // points reflect the currently-loaded committee's scorecard; role points
+  // are accurate platform-wide.
+  const earningAccounts = adminUsers.filter(a=>["delegate","president","gs","chair","cochair"].includes(a.role));
+  const leaderboard = earningAccounts.map(a=>{
+    const perf = a.role==="delegate" ? delegatePerformance(a.email, scorecardBundle) : null;
+    const ip = (hasParticipated(a) ? (ROLE_BASE_POINTS[a.role]??10) : 0) + (perf?.points||0);
+    return {email:a.email, name:a.name, ip};
+  }).sort((a,b)=>b.ip-a.ip);
+  const myRankIdx = user ? leaderboard.findIndex(l=>l.email===user.email) : -1;
+  const myRank = myRankIdx+1;
+  const topLeaderboard = leaderboard.slice(0,10);
+  const showMyRankSeparately = myRank>10;
+  const myPerf = (user && user.role==="delegate") ? delegatePerformance(user.email, scorecardBundle) : null;
+  const myRolePoints = (user && user.role!=="school" && user.role!=="host_school" && hasParticipated(user)) ? (ROLE_BASE_POINTS[user.role] ?? 10) : 0;
+  const myIP = myRolePoints + (myPerf?.points || 0);
+
+  // Slide-in pane at the left, opened from the "IP Points" header button.
+  const renderLeaderboardPanel = () => showLeaderboard && (
+    <>
+      <div onClick={()=>setShowLeaderboard(false)} style={{position:"fixed",inset:0,background:"rgba(0,0,0,0.4)",zIndex:996}}/>
+      <div style={{position:"fixed",top:0,left:0,bottom:0,width:340,maxWidth:"88vw",background:"#fff",zIndex:997,boxShadow:"4px 0 24px rgba(0,0,0,0.18)",overflowY:"auto",padding:"22px 20px",fontFamily:"system-ui",boxSizing:"border-box"}}>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:4}}>
+          <div style={{fontWeight:700,fontSize:16,color:C.navy,fontFamily:"Georgia,serif"}}>Leaderboard</div>
+          <button onClick={()=>setShowLeaderboard(false)} style={{background:"none",border:"none",fontSize:22,cursor:"pointer",color:C.textMuted,lineHeight:1,padding:0}}>×</button>
+        </div>
+        <div style={{fontSize:11,color:C.textMuted,marginBottom:18}}>All Conferences · Platform-wide</div>
+        {topLeaderboard.length===0 && <div style={{fontSize:13,color:C.textMuted}}>No one on the board yet.</div>}
+        {topLeaderboard.map((l,i)=>{
+          const isMe = user && l.email===user.email;
+          return (
+            <div key={l.email} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 0",borderBottom:`1px solid ${C.border}`,background:isMe?C.navyLight:"transparent",borderRadius:isMe?8:0,paddingLeft:isMe?10:0,paddingRight:isMe?10:0}}>
+              <div style={{width:24,fontWeight:700,fontSize:13,color:i<3?C.gold:C.textMuted,flexShrink:0}}>{i+1}</div>
+              <div style={{flex:1,minWidth:0}}><div style={{fontWeight:isMe?700:600,fontSize:13,color:C.navy,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.name}{isMe?" (You)":""}</div></div>
+              <div style={{fontWeight:700,fontSize:14,color:C.navy,flexShrink:0}}>{l.ip} IP</div>
+            </div>
+          );
+        })}
+        {user && showMyRankSeparately && (
+          <div style={{display:"flex",alignItems:"center",gap:12,padding:"10px 10px",marginTop:8,background:C.navyLight,borderRadius:8}}>
+            <div style={{width:24,fontWeight:700,fontSize:13,color:C.textMuted,flexShrink:0}}>{myRank}</div>
+            <div style={{flex:1,minWidth:0}}><div style={{fontWeight:700,fontSize:13,color:C.navy}}>{user.name} (You)</div></div>
+            <div style={{fontWeight:700,fontSize:14,color:C.navy,flexShrink:0}}>{myIP} IP</div>
+          </div>
+        )}
+      </div>
+    </>
+  );
+
   const speakerRef = useRef(null);
   const customTimerRef = useRef(null);
   const alfredEnd = useRef(null);
@@ -1731,31 +1824,13 @@ export default function App() {
       const isInstitutional = role==="school" || role==="host_school";
       const munsConducted = isInstitutional ? conferences.filter(c=>c.hostSchool===user.name) : [];
       const munsParticipated = isInstitutional ? conferences.filter(c=>(c.participatingSchools||[]).includes(user.name)) : [];
-      // Has this account ever actually joined a conference (school-approved
-      // or individual-approved)? A brand-new sign-up hasn't, and shouldn't
-      // earn role points, IP, a rank, or awards just for existing.
-      const hasParticipated = (u) => (u.registrations && u.registrations.length > 0) || !!u.conference;
       const myConfCount = user.registrations && user.registrations.length > 0 ? user.registrations.length : (user.conference ? 1 : 0);
-      const myPerf = role==="delegate" ? delegatePerformance(user.email, scorecardBundle) : null;
-      const myRolePoints = (isInstitutional || !hasParticipated(user)) ? 0 : (ROLE_BASE_POINTS[role] ?? 10);
-      const myIP = myRolePoints + (myPerf?.points || 0);
-      // Platform-wide leaderboard: every earning account on Accord, not just
-      // people in the conference you happen to be viewing from. (Performance
-      // points here reflect the currently-loaded committee's scorecard, so
-      // accounts in a different conference/committee are only ranked on
-      // their role points until you're viewing from their scorecard — the
-      // role-points signal alone is still accurate platform-wide.)
-      const earningAccounts = adminUsers.filter(a=>["delegate","president","gs","chair","cochair"].includes(a.role));
-      const leaderboard = earningAccounts.map(a=>{
-        const participated = hasParticipated(a);
-        const perf = a.role==="delegate" ? delegatePerformance(a.email, scorecardBundle) : null;
-        const ip = (participated ? (ROLE_BASE_POINTS[a.role]??10) : 0) + (perf?.points||0);
-        return {email:a.email, name:a.name, ip};
-      }).sort((a,b)=>b.ip-a.ip);
-      const rankIdx = leaderboard.findIndex(l=>l.email===user.email);
-      const myRank = rankIdx+1;
-      const topBoard = leaderboard.slice(0,10);
-      const showRankSeparately = myRank>10;
+      // Every conference this account has been registered for — past, present
+      // or upcoming — with venue/dates/status from the live conference list.
+      const myConferences = (user.registrations && user.registrations.length > 0 ? user.registrations : (user.conference ? [{conference:user.conference, school:user.school, committee:user.committee, country:user.country}] : []))
+        .map(r => ({ ...r, confObj: conferences.find(c=>c.name===r.conference) }))
+        .filter(r => r.confObj);
+      const rankIdx = myRankIdx;
       const profileStats = isInstitutional ? [
         {l:"MUNs Conducted",v:munsConducted.length},
         {l:"MUNs Participated",v:munsParticipated.length},
@@ -1767,6 +1842,7 @@ export default function App() {
         {l:"Awards Won",v:myPerf?.award?1:0},
       ];
       return (
+        <>
         <div style={{minHeight:"100vh",background:C.bg,fontFamily:"system-ui"}}>
           <div style={{background:C.navy,padding:"20px 32px",display:"flex",alignItems:"center",gap:16,flexWrap:"wrap"}}>
             <div onClick={()=>{setProfileView(false);setShowMunList(false);}} style={{display:"flex",alignItems:"center",gap:8,cursor:"pointer",flexShrink:0}}>
@@ -1775,6 +1851,7 @@ export default function App() {
             </div>
             <div style={{width:1,height:24,background:"rgba(255,255,255,0.15)"}}/>
             <button onClick={()=>{setProfileView(false);setShowMunList(true);}} style={{...mkBtn("primary"),padding:"9px 18px",fontSize:13}}>Enter the MUN →</button>
+            {!isInstitutional&&<button onClick={()=>setShowLeaderboard(true)} style={{...mkBtn(),padding:"9px 16px",fontSize:13}}>IP Points</button>}
             <div style={{width:1,height:24,background:"rgba(255,255,255,0.15)"}}/>
             <div style={{background:currentRole.bg,color:currentRole.color,borderRadius:10,width:44,height:44,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:15,flexShrink:0}}>{user.name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase()}</div>
             <div><div style={{fontWeight:700,fontSize:17,color:"#fff",fontFamily:"Georgia,serif"}}>{user.name}</div><div style={{fontSize:12,color:"rgba(255,255,255,0.5)",marginTop:2}}>{currentRole.label}{user.school?` · ${user.school}`:""}{user.conference?` · ${user.conference}`:""}</div></div>
@@ -1787,6 +1864,23 @@ export default function App() {
             <div style={{display:"grid",gridTemplateColumns:isMobile?"repeat(2,1fr)":`repeat(${profileStats.length},1fr)`,gap:12,marginBottom:20}}>
               {profileStats.map(s=>(<div key={s.l} style={{background:C.bgSoft,border:`1px solid ${C.border}`,borderRadius:10,padding:"16px 18px"}}><div style={{fontSize:24,fontWeight:700,color:C.navy}}>{s.v}</div><div style={{fontSize:11,color:C.textMuted,marginTop:2}}>{s.l}</div></div>))}
             </div>
+
+            {!isInstitutional&&(
+            <div style={card}>
+              <div style={cardTitle}>Conferences Participated</div>
+              {myConferences.length===0 ? (
+                <div style={{fontSize:13,color:C.textMuted,padding:"4px 0"}}>No conferences yet. {role==="delegate"?"Use \"Request to Participate\" to join one.":"You'll see them here once you're placed in a conference."}</div>
+              ) : myConferences.map(r=>(
+                <div key={r.conference} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"10px 0",borderBottom:`1px solid ${C.border}`,gap:10,flexWrap:"wrap"}}>
+                  <div>
+                    <div style={{fontWeight:700,fontSize:14,color:C.navy}}>{r.confObj.name}</div>
+                    <div style={{fontSize:12,color:C.textMuted,marginTop:2}}>{r.confObj.venue}{r.confObj.startDate?` · ${formatConfDate(r.confObj)}`:""}{r.committee?` · ${r.committee}`:""}{r.country?` · ${r.country}`:""}</div>
+                  </div>
+                  <span style={pill(r.confObj.status)}>{r.confObj.status==="active"?"Active":"Upcoming"}</span>
+                </div>
+              ))}
+            </div>
+            )}
 
             {!isInstitutional&&(
             <div style={card}>
@@ -1831,7 +1925,7 @@ export default function App() {
             {isInstitutional&&(
             <div style={card}>
               <div style={cardTitle}>{user.name} — Conference History</div>
-              <div style={{fontSize:12.5,color:C.textMuted,lineHeight:1.7,marginBottom:16}}>{currentRole.label} accounts represent an institution rather than an individual participant, so they don't earn Intellectual Performance points and don't appear on the leaderboard below.</div>
+              <div style={{fontSize:12.5,color:C.textMuted,lineHeight:1.7,marginBottom:16}}>{currentRole.label} accounts represent an institution rather than an individual participant, so they don't earn Intellectual Performance points and don't appear on the leaderboard.</div>
               <div style={{fontSize:11,fontWeight:700,color:C.textMuted,letterSpacing:0.6,marginBottom:8}}>MUNS CONDUCTED (HOSTED)</div>
               {munsConducted.length===0&&<div style={{fontSize:13,color:C.textMuted,marginBottom:16}}>Not hosting any conference yet.</div>}
               {munsConducted.map(c=>(<div key={c.id} style={{display:"flex",justifyContent:"space-between",alignItems:"center",padding:"8px 0",borderBottom:`1px solid ${C.border}`}}><span style={{fontSize:13,fontWeight:600,color:C.navy}}>{c.name}</span><span style={{fontSize:12,color:C.textMuted}}>{c.venue}</span></div>))}
@@ -1841,28 +1935,10 @@ export default function App() {
             </div>
             )}
 
-            <div style={card}>
-              <div style={cardTitle}>Leaderboard — All Conferences</div>
-              {topBoard.map((l,i)=>{
-                const isMe=l.email===user.email;
-                return (
-                  <div key={l.email} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 0",borderBottom:`1px solid ${C.border}`,background:isMe?C.navyLight:"transparent",borderRadius:isMe?8:0,paddingLeft:isMe?10:0,paddingRight:isMe?10:0}}>
-                    <div style={{width:24,fontWeight:700,fontSize:13,color:i<3?C.gold:C.textMuted,flexShrink:0}}>{i+1}</div>
-                    <div style={{flex:1,minWidth:0}}><div style={{fontWeight:isMe?700:600,fontSize:13,color:C.navy,overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}}>{l.name}{isMe?" (You)":""}</div></div>
-                    <div style={{fontWeight:700,fontSize:14,color:C.navy,flexShrink:0}}>{l.ip} IP</div>
-                  </div>
-                );
-              })}
-              {showRankSeparately&&(
-                <div style={{display:"flex",alignItems:"center",gap:12,padding:"10px 10px",marginTop:8,background:C.navyLight,borderRadius:8}}>
-                  <div style={{width:24,fontWeight:700,fontSize:13,color:C.textMuted,flexShrink:0}}>{myRank}</div>
-                  <div style={{flex:1,minWidth:0}}><div style={{fontWeight:700,fontSize:13,color:C.navy}}>{user.name} (You)</div></div>
-                  <div style={{fontWeight:700,fontSize:14,color:C.navy,flexShrink:0}}>{myIP} IP</div>
-                </div>
-              )}
-            </div>
           </div>
         </div>
+        {renderLeaderboardPanel()}
+        </>
       );
     }
     if (showMunList) {
@@ -1897,7 +1973,7 @@ export default function App() {
               <div key={opt.conference} style={{...card,display:"flex",justifyContent:"space-between",alignItems:"center",gap:14,flexWrap:"wrap"}}>
                 <div>
                   <div style={{fontWeight:700,fontSize:15,color:C.navy}}>{opt.confObj.name}</div>
-                  <div style={{fontSize:12,color:C.textMuted,marginTop:3}}>{opt.confObj.venue}{opt.committee?` · ${opt.committee}`:""}{opt.country?` · ${opt.country}`:""}</div>
+                  <div style={{fontSize:12,color:C.textMuted,marginTop:3}}>{opt.confObj.venue}{opt.confObj.startDate?` · ${formatConfDate(opt.confObj)}`:""}{opt.committee?` · ${opt.committee}`:""}{opt.country?` · ${opt.country}`:""}</div>
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:10}}>
                   <span style={pill(opt.confObj.status)}>{opt.confObj.status==="active"?"Active":"Upcoming"}</span>
@@ -1930,6 +2006,7 @@ export default function App() {
       "Native mobile apps for delegates and chairs",
     ];
     return (
+      <>
       <div style={{minHeight:"100vh",background:C.bg,fontFamily:"system-ui",color:C.text}}>
         <div style={{position:"sticky",top:0,zIndex:50,background:"rgba(255,255,255,0.92)",backdropFilter:"blur(6px)",borderBottom:`1px solid ${C.border}`,padding:"14px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",flexWrap:"wrap",gap:12}}>
           <div onClick={goHome} style={{display:"flex",alignItems:"center",gap:10,cursor:"pointer"}}>
@@ -1937,6 +2014,7 @@ export default function App() {
             <span style={{fontWeight:700,fontSize:18,color:C.navy,fontFamily:"Georgia,serif"}}>Accord</span>
           </div>
           <div style={{display:"flex",alignItems:"center",gap:8}}>
+            {role!=="school"&&role!=="host_school"&&<button onClick={()=>setShowLeaderboard(true)} style={{...mkBtn(),padding:"9px 18px",fontSize:13}}>IP Points</button>}
             <button onClick={()=>setProfileView(true)} style={{...mkBtn(),padding:"9px 18px",fontSize:13}}>Profile</button>
             <button onClick={()=>setShowMunList(true)} style={{...mkBtn("primary"),padding:"9px 18px",fontSize:13}}>Enter the MUN</button>
             <button onClick={()=>{setUser(null);setHasEnteredMUN(false);setShowMunList(false);setProfileView(false);setShowLogin(false);setShowSignup(false);setShowParticipate(false);}} style={{...mkBtn(),padding:"9px 18px",fontSize:13}}>Sign out</button>
@@ -2005,6 +2083,8 @@ export default function App() {
           <div style={{fontSize:12,color:C.textMuted,marginTop:28}}>© 2025 Accord · Model United Nations Platform</div>
         </div>
       </div>
+      {renderLeaderboardPanel()}
+      </>
     );
   }
 
@@ -3045,6 +3125,7 @@ export default function App() {
   const TAB_ICONS_LIST = TAB_ICONS;
 
   return (
+    <>
     <div style={{fontFamily:"'Georgia','Times New Roman',serif",minHeight:"100vh",background:C.bgSoft,color:C.text,display:"flex",flexDirection:"column",overflowX:"hidden",maxWidth:"100vw"}}>
       <div style={{background:C.bg,borderBottom:`1px solid ${C.border}`,padding:isMobile?"0 10px":"0 16px",display:"flex",alignItems:"center",height:52,gap:isMobile?6:10,position:"sticky",top:0,zIndex:50}}>
         <button onClick={()=>setNavOpen(o=>!o)} style={{display:"flex",flexDirection:"column",gap:4,padding:"6px",background:"none",border:"none",cursor:"pointer",flexShrink:0}}>
@@ -3059,6 +3140,8 @@ export default function App() {
         <div style={{marginLeft:"auto",display:"flex",alignItems:"center",gap:isMobile?6:8,fontFamily:"system-ui",flexShrink:0}}>
           {!isMobile&&<div style={{textAlign:"right"}}><div style={{fontSize:11,fontWeight:600,color:C.navy,lineHeight:1.2}}>{user.name}</div><div style={{fontSize:10,color:C.textMuted}}>{currentRole.label}</div></div>}
           <div style={{width:30,height:30,borderRadius:"50%",background:currentRole.bg,color:currentRole.color,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:700,fontSize:11,flexShrink:0}}>{user.name.split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase()}</div>
+          {role!=="school"&&role!=="host_school"&&<button onClick={()=>setShowLeaderboard(true)} style={{...mkBtn(),padding:isMobile?"4px 8px":"4px 10px",fontSize:11}}>IP Points</button>}
+          <button onClick={()=>{setHasEnteredMUN(false);setShowMunList(false);setProfileView(true);}} style={{...mkBtn(),padding:isMobile?"4px 8px":"4px 10px",fontSize:11}}>Profile</button>
           <button onClick={()=>{setUser(null);setHasEnteredMUN(false);setShowMunList(false);setProfileView(false);setShowLogin(false);setShowSignup(false);setShowParticipate(false);}} style={{...mkBtn(),padding:isMobile?"4px 8px":"4px 10px",fontSize:11}}>{isMobile?"Out":"Sign out"}</button>
         </div>
       </div>
@@ -3084,5 +3167,7 @@ export default function App() {
         </div>
       </div>
     </div>
+    {renderLeaderboardPanel()}
+    </>
   );
 }
